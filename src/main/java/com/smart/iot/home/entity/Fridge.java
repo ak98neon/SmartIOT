@@ -5,22 +5,30 @@ import java.util.List;
 import java.util.function.Consumer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.thymeleaf.util.StringUtils;
 
 @Document("fridge")
 public class Fridge {
 
   @Id
   private String id;
+  private String name;
   private byte[] qrLink;
   private List<Product> productList;
 
   public Fridge() {
   }
 
-  private Fridge(String id, byte[] qrLink, List<Product> productList) {
+  public Fridge(String id, String name, byte[] qrLink,
+      List<Product> productList) {
     this.id = id;
+    this.name = name;
     this.qrLink = qrLink;
     this.productList = productList;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public String getId() {
@@ -39,7 +47,8 @@ public class Fridge {
   public String toString() {
     return "Fridge{" +
         "id='" + id + '\'' +
-        ", qrLink='" + Arrays.toString(qrLink) + '\'' +
+        ", name='" + name + '\'' +
+        ", qrLink=" + Arrays.toString(qrLink) +
         ", productList=" + productList +
         '}';
   }
@@ -47,12 +56,17 @@ public class Fridge {
   public static class Builder {
 
     private String id;
+    private String name;
     private byte[] link;
     private List<Product> productList;
 
     public Builder with(Consumer<Builder> builderConsumer) {
       builderConsumer.accept(this);
       return this;
+    }
+
+    public void name(String name) {
+      this.name = name;
     }
 
     public void id(String id) {
@@ -68,7 +82,10 @@ public class Fridge {
     }
 
     public Fridge createFridge() {
-      return new Fridge(id, link, productList);
+      if (StringUtils.isEmptyOrWhitespace(this.name)) {
+        this.name = this.id;
+      }
+      return new Fridge(id, name, link, productList);
     }
   }
 }

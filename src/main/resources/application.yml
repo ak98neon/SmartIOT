@@ -9,6 +9,8 @@ spring:
       database: iot
 
 iot:
+  api:
+    prefix: "/iot"
   qr:
     width: 350
     height: 350
