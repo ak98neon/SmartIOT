@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: iot
+
+iot:
+  qr:
+    width: 350
+    height: 350
