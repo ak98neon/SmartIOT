@@ -23,9 +23,9 @@ public class DefaultIotService implements IotService {
   }
 
   @Override
-  public Fridge registerFridge() {
+  public Fridge registerFridge(String baseUrl) {
     String id = generateUniqueId();
-    String link = "http://localhost:8080/iot/fridges/" + id;
+    String link = baseUrl + "/iot/fridges/" + id;
     Fridge fridge = new Builder().with(x -> {
       x.id(id);
       x.link(sneaky(() -> qrCodeGenerator.generateQRCodeImage(link)));

@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IotService {
 
-  Fridge registerFridge();
+  Fridge registerFridge(String baseUrl);
 
   List<Fridge> getAllFridges();
 

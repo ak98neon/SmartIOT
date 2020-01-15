@@ -1,8 +1,11 @@
 package com.smart.iot.web;
 
+import static com.smart.iot.supply.UrlGenerator.getBaseUrl;
+
 import com.smart.iot.home.IotService;
 import com.smart.iot.home.entity.Fridge;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,8 +28,8 @@ public class FridgeController {
   }
 
   @PostMapping
-  public ResponseEntity<byte[]> createFridge() {
-    Fridge fridge = iotService.registerFridge();
+  public ResponseEntity<byte[]> createFridge(HttpServletRequest request) {
+    Fridge fridge = iotService.registerFridge(getBaseUrl(request));
     final HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.IMAGE_PNG);
 
