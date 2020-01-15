@@ -20,7 +20,6 @@ public final class SneakyTrow {
     throw new AssertionError();
   }
 
-  @SuppressWarnings("unchecked")
   private static <T extends Exception> void sneakyTrow(Exception e) throws T {
     throw new SmartIotException(e.getMessage());
   }
