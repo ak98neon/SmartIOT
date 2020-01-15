@@ -4,7 +4,7 @@ import static com.smart.iot.supply.SneakyTrow.sneaky;
 
 import com.smart.iot.home.entity.Fridge;
 import com.smart.iot.home.entity.Fridge.Builder;
-import com.smart.iot.qr.QrCodeGenerator;
+import com.smart.iot.code.QrCodeGenerator;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -23,11 +23,12 @@ public class DefaultIotService implements IotService {
   }
 
   @Override
-  public Fridge registerFridge(String baseUrl) {
+  public Fridge registerFridge(String baseUrl, String name) {
     String id = generateUniqueId();
     String link = baseUrl + "/iot/fridges/" + id;
     Fridge fridge = new Builder().with(x -> {
       x.id(id);
+      x.name(name);
       x.link(sneaky(() -> qrCodeGenerator.generateQRCodeImage(link)));
       x.productList(Collections.emptyList());
     }).createFridge();

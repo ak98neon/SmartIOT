@@ -1,13 +1,43 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Your fridges</title>
 </head>
 <body>
-
+  <table>
+    <thead>
+    <tr>
+      <th> Id </th>
+      <th> Name </th>
+      <th> Action </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${fridges.empty}">
+      <td colspan="2"> No Fridges Available </td>
+    </tr>
+    <tr th:each="fridge : ${fridges}">
+      <td><span th:text="${fridge.id}"> ID </span></td>
+      <td><span th:text="${fridge.name}"> Name </span></td>
+      <td>
+        <form method="POST" action="/iot/products" enctype="multipart/form-data">
+          <table>
+            <tr>
+              <td><label path="file">Select a barcode</label></td>
+              <td><input type="file" name="file" /></td>
+            </tr>
+            <tr>
+              <td><input type="submit" value="Upload" /></td>
+            </tr>
+          </table>
+          </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </body>
 </html>

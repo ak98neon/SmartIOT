@@ -1,4 +1,4 @@
-package com.smart.iot.qr;
+package com.smart.iot.code;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;

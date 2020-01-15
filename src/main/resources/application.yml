@@ -7,6 +7,10 @@ spring:
       host: localhost
       port: 27017
       database: iot
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 iot:
   api:

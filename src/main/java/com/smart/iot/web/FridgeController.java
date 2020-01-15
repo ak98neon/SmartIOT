@@ -1,6 +1,7 @@
 package com.smart.iot.web;
 
 import static com.smart.iot.supply.UrlGenerator.getBaseUrl;
+import static com.smart.iot.web.config.ApiConfig.PREFIX;
 
 import com.smart.iot.home.IotService;
 import com.smart.iot.home.entity.Fridge;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/iot/fridges")
+@RequestMapping(PREFIX + "/fridges")
 public class FridgeController {
 
   private IotService iotService;
@@ -25,8 +26,9 @@ public class FridgeController {
   }
 
   @PostMapping
-  public String createFridge(HttpServletRequest request, Model model) {
-    Fridge fridge = iotService.registerFridge(getBaseUrl(request));
+  public String createFridge(HttpServletRequest request, Model model,
+      @RequestParam(name = "fridge_name", required = false) String fridgeName) {
+    Fridge fridge = iotService.registerFridge(getBaseUrl(request), fridgeName);
     model.addAttribute("qrCode", Base64.getEncoder().encodeToString(fridge.getQrLink()));
     return "fridge/newFridge";
   }
@@ -37,7 +39,6 @@ public class FridgeController {
   }
 
   @GetMapping
-  @ResponseBody
   public String getAllFridges(Model model) {
     model.addAttribute("fridges", iotService.getAllFridges());
     return "fridge/fridges";

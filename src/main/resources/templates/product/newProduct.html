@@ -5,16 +5,9 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Main</title>
+  <title>Document</title>
 </head>
 <body>
-  <h1>Welcome in your smart home</h1>
-  <a th:href="@{/iot/fridges}">Get all fridges</a>
-  <form action="/iot/fridges" method="POST">
-    <label for="fridge_name">
-      <input type="text" id="fridge_name" name="fridge_name">
-    </label>
-    <button type="submit">Create new fridge</button>
-  </form>
+  <h1 th:text="${barcode}"></h1>
 </body>
 </html>

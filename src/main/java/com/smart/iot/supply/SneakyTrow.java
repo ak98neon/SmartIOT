@@ -1,5 +1,6 @@
 package com.smart.iot.supply;
 
+import com.smart.iot.SmartIotException;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
@@ -21,6 +22,6 @@ public final class SneakyTrow {
 
   @SuppressWarnings("unchecked")
   private static <T extends Exception> void sneakyTrow(Exception e) throws T {
-    throw (T) e;
+    throw new SmartIotException(e.getMessage());
   }
 }
