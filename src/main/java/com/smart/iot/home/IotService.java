@@ -8,4 +8,6 @@ public interface IotService {
   Fridge registerFridge();
 
   List<Fridge> getAllFridges();
+
+  Fridge findFridgeById(String id);
 }

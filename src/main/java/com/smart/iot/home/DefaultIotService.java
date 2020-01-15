@@ -26,7 +26,7 @@ public class DefaultIotService implements IotService {
   @Override
   public Fridge registerFridge() {
     String id = generateUniqueId();
-    String link = "localhost:8080/iot/fridges/" + id;
+    String link = "http://localhost:8080/iot/fridges/" + id;
     Fridge fridge = new Builder().with(x -> {
       x.id(id);
       try {
@@ -42,6 +42,11 @@ public class DefaultIotService implements IotService {
   @Override
   public List<Fridge> getAllFridges() {
     return fridgeRepository.findAll();
+  }
+
+  @Override
+  public Fridge findFridgeById(String id) {
+    return fridgeRepository.findById(id).orElse(null);
   }
 
   private String generateUniqueId() {
