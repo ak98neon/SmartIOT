@@ -2,8 +2,10 @@ package com.smart.iot.home.entity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.thymeleaf.util.StringUtils;
 
@@ -14,6 +16,7 @@ public class Fridge {
   private String id;
   private String name;
   private byte[] qrLink;
+  @DBRef
   private List<Product> productList;
 
   public Fridge() {
@@ -66,10 +69,12 @@ public class Fridge {
     }
 
     public void name(String name) {
+      Objects.requireNonNull(name);
       this.name = name;
     }
 
     public void id(String id) {
+      Objects.requireNonNull(id);
       this.id = id;
     }
 

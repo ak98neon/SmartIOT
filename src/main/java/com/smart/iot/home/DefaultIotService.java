@@ -2,11 +2,16 @@ package com.smart.iot.home;
 
 import static com.smart.iot.supply.SneakyTrow.sneaky;
 
+import com.smart.iot.code.QrCodeGenerator;
 import com.smart.iot.home.entity.Fridge;
 import com.smart.iot.home.entity.Fridge.Builder;
-import com.smart.iot.code.QrCodeGenerator;
+import com.smart.iot.home.entity.Product;
+import com.smart.iot.home.entity.Product.ProductCreator;
+import com.smart.iot.home.entity.TypeProduct;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +19,19 @@ import org.springframework.stereotype.Service;
 public class DefaultIotService implements IotService {
 
   private FridgeRepository fridgeRepository;
+  private ProductRepository productRepository;
   private QrCodeGenerator qrCodeGenerator;
 
   public DefaultIotService(FridgeRepository fridgeRepository,
-      QrCodeGenerator qrCodeGenerator) {
+      ProductRepository productRepository, QrCodeGenerator qrCodeGenerator) {
     this.fridgeRepository = fridgeRepository;
+    this.productRepository = productRepository;
     this.qrCodeGenerator = qrCodeGenerator;
   }
 
   @Override
   public Fridge registerFridge(String baseUrl, String name) {
-    String id = generateUniqueId();
+    String id = generateUniqueIdForFridge();
     String link = baseUrl + "/iot/fridges/" + id;
     Fridge fridge = new Builder().with(x -> {
       x.id(id);
@@ -33,6 +40,26 @@ public class DefaultIotService implements IotService {
       x.productList(Collections.emptyList());
     }).createFridge();
     return fridgeRepository.save(fridge);
+  }
+
+  @Override
+  public Product createProduct(Integer count, OffsetDateTime expiredDate, Long price,
+      TypeProduct typeProduct, String name, String barcode, String fridgeId) {
+    String uniqueIdForProduct = generateUniqueIdForProduct();
+
+    Optional<Fridge> byId = fridgeRepository.findById(fridgeId);
+    Fridge fridge = byId.orElseThrow(RuntimeException::new);
+
+    return new ProductCreator().with(x -> {
+      x.id(uniqueIdForProduct);
+      x.barcode(barcode);
+      x.count(count);
+      x.expiredDate(expiredDate);
+      x.price(price);
+      x.typeProduct(typeProduct);
+      x.name(name);
+      x.fridge(fridge);
+    }).create();
   }
 
   @Override
@@ -45,10 +72,18 @@ public class DefaultIotService implements IotService {
     return fridgeRepository.findById(id).orElse(null);
   }
 
-  private String generateUniqueId() {
+  private String generateUniqueIdForFridge() {
     String id = UUID.randomUUID().toString();
     if (fridgeRepository.findById(id).isPresent()) {
-      return generateUniqueId();
+      return generateUniqueIdForFridge();
+    }
+    return id;
+  }
+
+  private String generateUniqueIdForProduct() {
+    String id = UUID.randomUUID().toString();
+    if (productRepository.findById(id).isPresent()) {
+      return generateUniqueIdForProduct();
     }
     return id;
   }
