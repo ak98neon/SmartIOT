@@ -7,6 +7,12 @@ spring:
       host: localhost
       port: 27017
       database: iot
+      password: smartiot
+      username: smartiot
+  datasource:
+    username: postgres
+    password: smartiot
+    url: jdbc:postgresql://localhost:5432/postgres
   servlet:
     multipart:
       max-file-size: 50MB
