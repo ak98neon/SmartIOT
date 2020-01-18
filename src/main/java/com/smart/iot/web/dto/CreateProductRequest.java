@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smart.iot.home.entity.TypeProduct;
 import java.time.OffsetDateTime;
+import org.springframework.web.multipart.MultipartFile;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = Include.NON_NULL)
@@ -26,10 +27,13 @@ public class CreateProductRequest {
   private String barcodeReq;
   @JsonProperty("fridge_id")
   private String fridgeId;
+  @JsonProperty("file")
+  private MultipartFile file;
 
   @JsonCreator
   public CreateProductRequest(Integer count, OffsetDateTime expiredDate, Long price,
-      TypeProduct typeProduct, String name, String barcodeReq, String fridgeId) {
+      TypeProduct typeProduct, String name, String barcodeReq, String fridgeId,
+      MultipartFile file) {
     this.count = count;
     this.expiredDate = expiredDate;
     this.price = price;
@@ -37,6 +41,11 @@ public class CreateProductRequest {
     this.name = name;
     this.barcodeReq = barcodeReq;
     this.fridgeId = fridgeId;
+    this.file = file;
+  }
+
+  public MultipartFile getFile() {
+    return file;
   }
 
   public Integer getCount() {

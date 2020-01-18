@@ -8,12 +8,9 @@ import com.smart.iot.home.IotService;
 import com.smart.iot.web.dto.CreateProductRequest;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(PREFIX + "/products")
@@ -28,12 +25,12 @@ public class ProductController {
   }
 
   @PostMapping
-  public String createProduct(@RequestParam(value = "file", required = false) MultipartFile file,
-      Model model, @ModelAttribute CreateProductRequest createProductRequest) {
-    if (file != null) {
-      String barcode = sneaky(() -> BarcodeReader.readBarcodeFromImage(file.getInputStream()));
+  public String createProduct(@RequestBody CreateProductRequest createProductRequest) {
+    if (createProductRequest.getFile() != null) {
+      String barcode = sneaky(() -> BarcodeReader.readBarcodeFromImage(
+          createProductRequest.getFile().getInputStream())
+      );
       logger.info("Get a product barcode: " + barcode);
-      model.addAttribute("barcode", barcode);
       iotService
           .createProduct(createProductRequest.getCount(), createProductRequest.getExpiredDate(),
               createProductRequest.getPrice(), createProductRequest.getTypeProduct(),
@@ -45,7 +42,6 @@ public class ProductController {
             createProductRequest.getPrice(), createProductRequest.getTypeProduct(),
             createProductRequest.getName(),
             createProductRequest.getBarcodeReq(), createProductRequest.getFridgeId());
-    model.addAttribute("barcode", createProductRequest.getBarcodeReq());
     return "product/newProduct";
   }
 }

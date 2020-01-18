@@ -2,7 +2,8 @@ package com.smart.iot.home.entity;
 
 public enum TypeProduct {
   LIQUID("luquid"),
-  SOLID("solid");
+  SOLID("solid"),
+  NONE("none");
 
   private String name;
 

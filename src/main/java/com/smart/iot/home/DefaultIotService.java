@@ -56,7 +56,11 @@ public class DefaultIotService implements IotService {
       x.count(count);
       x.expiredDate(expiredDate);
       x.price(price);
-      x.typeProduct(typeProduct);
+      if (typeProduct == null) {
+        x.typeProduct(TypeProduct.NONE);
+      } else {
+        x.typeProduct(typeProduct);
+      }
       x.name(name);
       x.fridge(fridge);
     }).create();

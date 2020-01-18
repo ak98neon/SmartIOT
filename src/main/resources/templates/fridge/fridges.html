@@ -1,43 +1,68 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"
+        crossorigin="anonymous">
   <title>Your fridges</title>
 </head>
 <body>
-  <table>
-    <thead>
-    <tr>
-      <th> Id </th>
-      <th> Name </th>
-      <th> Action </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${fridges.empty}">
-      <td colspan="2"> No Fridges Available </td>
-    </tr>
-    <tr th:each="fridge : ${fridges}">
-      <td><span th:text="${fridge.id}"> ID </span></td>
-      <td><span th:text="${fridge.name}"> Name </span></td>
-      <td>
-        <form method="POST" action="/iot/products" enctype="multipart/form-data">
-          <table>
-            <tr>
-              <td><label path="file">Select a barcode</label></td>
-              <td><input type="file" name="file" /></td>
-            </tr>
-            <tr>
-              <td><input type="submit" value="Upload" /></td>
-            </tr>
-          </table>
-          </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+<table>
+  <thead>
+  <tr>
+    <th> Id</th>
+    <th> Name</th>
+    <th> Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:if="${fridges.empty}">
+    <td colspan="2"> No Fridges Available</td>
+  </tr>
+  <tr th:each="fridge : ${fridges}">
+    <td><span th:text="${fridge.id}"> ID </span></td>
+    <td><span th:text="${fridge.name}"> Name </span></td>
+    <td>
+      <form id="createProductForm" method="POST" action="/iot/products"
+            enctype="multipart/form-data" onsubmit="createProduct()">
+        <div class="form-group">
+          <label for="file">Select a barcode</label>
+          <input type="file" class="form-control-file" id="file">
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" class="form-control" placeholder="Name">
+        </div>
+        <div class="form-group">
+          <label for="barcode">Barcode</label>
+          <input type="text" id="barcode" class="form-control" placeholder="Barcode">
+        </div>
+        <div class="form-group">
+          <label for="expired_date">Expired Date</label>
+          <input type="text" id="expired_date" class="form-control" placeholder="Expired Date">
+        </div>
+        <div class="form-group">
+          <label for="type_product">Type of Product</label>
+          <input type="text" id="type_product" class="form-control" placeholder="Type">
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="text" id="price" class="form-control" placeholder="Price">
+        </div>
+        <div class="form-group">
+          <label for="count">Count</label>
+          <input type="text" id="count" class="form-control" placeholder="Count">
+        </div>
+        <button class="btn btn-primary">Upload</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script type="text/javascript" th:src="@{/js/product/createProduct.js}"></script>
 </body>
 </html>
