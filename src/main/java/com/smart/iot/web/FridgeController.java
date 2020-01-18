@@ -3,8 +3,8 @@ package com.smart.iot.web;
 import static com.smart.iot.supply.UrlGenerator.getBaseUrl;
 import static com.smart.iot.web.config.ApiConfig.PREFIX;
 
-import com.smart.iot.home.IotService;
-import com.smart.iot.home.entity.Fridge;
+import com.smart.iot.kit.IotService;
+import com.smart.iot.kit.entity.Fridge;
 import java.util.Base64;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;

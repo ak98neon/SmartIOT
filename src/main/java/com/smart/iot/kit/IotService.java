@@ -1,8 +1,8 @@
-package com.smart.iot.home;
+package com.smart.iot.kit;
 
-import com.smart.iot.home.entity.Fridge;
-import com.smart.iot.home.entity.Product;
-import com.smart.iot.home.entity.TypeProduct;
+import com.smart.iot.kit.entity.Fridge;
+import com.smart.iot.kit.entity.Product;
+import com.smart.iot.kit.entity.TypeProduct;
 import java.time.OffsetDateTime;
 import java.util.List;
 

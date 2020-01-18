@@ -1,6 +1,6 @@
-package com.smart.iot.home;
+package com.smart.iot.kit;
 
-import com.smart.iot.home.entity.Fridge;
+import com.smart.iot.kit.entity.Fridge;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

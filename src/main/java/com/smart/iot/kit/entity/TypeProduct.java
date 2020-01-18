@@ -1,4 +1,4 @@
-package com.smart.iot.home.entity;
+package com.smart.iot.kit.entity;
 
 public enum TypeProduct {
   LIQUID("luquid"),

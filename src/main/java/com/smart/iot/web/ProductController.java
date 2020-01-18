@@ -4,16 +4,22 @@ import static com.smart.iot.supply.SneakyTrow.sneaky;
 import static com.smart.iot.web.config.ApiConfig.PREFIX;
 
 import com.smart.iot.code.BarcodeReader;
-import com.smart.iot.home.IotService;
+import com.smart.iot.kit.IotService;
+import com.smart.iot.kit.entity.Product;
 import com.smart.iot.web.dto.CreateProductRequest;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.logging.Logger;
-import org.springframework.stereotype.Controller;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.util.StringUtils;
 
-@Controller
-@RequestMapping(PREFIX + "/products")
+@RestController
+@RequestMapping(value = PREFIX + "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 
   private Logger logger = Logger.getLogger(ProductController.class.getName());
@@ -25,11 +31,14 @@ public class ProductController {
   }
 
   @PostMapping
-  public String createProduct(@RequestBody CreateProductRequest createProductRequest) {
-    if (createProductRequest.getFile() != null) {
+  public Product createProduct(
+      @RequestBody CreateProductRequest createProductRequest) {
+    if (!StringUtils.isEmptyOrWhitespace(createProductRequest.getFile())) {
+      byte[] imageByte = Base64.decodeBase64(createProductRequest.getFile());
+      InputStream inputStream = new ByteArrayInputStream(imageByte);
       String barcode = sneaky(() -> BarcodeReader.readBarcodeFromImage(
-          createProductRequest.getFile().getInputStream())
-      );
+          inputStream
+      ));
       logger.info("Get a product barcode: " + barcode);
       iotService
           .createProduct(createProductRequest.getCount(), createProductRequest.getExpiredDate(),
@@ -37,11 +46,10 @@ public class ProductController {
               createProductRequest.getName(),
               barcode, createProductRequest.getFridgeId());
     }
-    iotService
+    return iotService
         .createProduct(createProductRequest.getCount(), createProductRequest.getExpiredDate(),
             createProductRequest.getPrice(), createProductRequest.getTypeProduct(),
             createProductRequest.getName(),
             createProductRequest.getBarcodeReq(), createProductRequest.getFridgeId());
-    return "product/newProduct";
   }
 }
