@@ -128,13 +128,7 @@ public class DefaultIotService implements IotService {
   }
 
   private void saveProductItemIntoFridge(ProductItem productItem, Fridge fridge) {
-    if (fridge.getProductList().contains(productItem)) {
-      int i = fridge.getProductList().indexOf(productItem);
-      ProductItem existProductItem = fridge.getProductList().get(i);
-      existProductItem.setCount(existProductItem.getCount() + productItem.getCount());
-    } else {
-      fridge.getProductList().add(productItem);
-    }
+    fridge.getProductList().add(productItem);
     fridgeRepository.save(fridge);
   }
 
