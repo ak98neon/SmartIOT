@@ -17,6 +17,11 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
 
 management:
   endpoints:

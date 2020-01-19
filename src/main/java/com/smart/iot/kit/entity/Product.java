@@ -1,32 +1,43 @@
 package com.smart.iot.kit.entity;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.function.Consumer;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-@Document("product")
-public class Product {
+@Table(name = "product", schema = "public")
+@Entity(name = "product")
+public class Product extends BaseAuditEntity {
 
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false, unique = true)
+  private Long id;
   private String name;
+  @Column(name = "type_product")
   private TypeProduct typeProduct;
+  @Transient
   private Integer count;
   private String barcode;
   private Long price;
-  private OffsetDateTime expiredDate;
-  @DBRef
-  private Fridge fridge;
+  @Transient
+  private LocalDate expiredDate;
+  @Transient
+  private String fridge;
 
   public Product() {
   }
 
-  public Product(String id, String name, TypeProduct typeProduct, Integer count,
-      String barcode, Long price, OffsetDateTime expiredDate, Fridge fridge) {
-    this.id = id;
+  public Product(String name, TypeProduct typeProduct, Integer count,
+      String barcode, Long price, LocalDate expiredDate, String fridge) {
     this.name = name;
     this.typeProduct = typeProduct;
     this.count = count;
@@ -34,13 +45,19 @@ public class Product {
     this.price = price;
     this.expiredDate = expiredDate;
     this.fridge = fridge;
+    super.setCreatedAt(OffsetDateTime.now());
+    super.setUpdatedAt(OffsetDateTime.now());
   }
 
-  public String getId() {
+  public static LocalDate parseExpiredDate(String date) {
+    return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  }
+
+  public Long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -76,11 +93,11 @@ public class Product {
     this.barcode = barcode;
   }
 
-  public OffsetDateTime getExpiredDate() {
+  public LocalDate getExpiredDate() {
     return expiredDate;
   }
 
-  public void setExpiredDate(OffsetDateTime expiredDate) {
+  public void setExpiredDate(LocalDate expiredDate) {
     this.expiredDate = expiredDate;
   }
 
@@ -88,25 +105,23 @@ public class Product {
     return price;
   }
 
+  public String getFridge() {
+    return fridge;
+  }
+
   public static class ProductCreator {
 
-    private String id;
     private String name;
     private TypeProduct typeProduct;
     private Integer count;
     private String barcode;
     private Long price;
-    private OffsetDateTime expiredDate;
-    private Fridge fridge;
+    private LocalDate expiredDate;
+    private String fridge;
 
     public ProductCreator with(Consumer<ProductCreator> consumer) {
       consumer.accept(this);
       return this;
-    }
-
-    public void id(String id) {
-      Objects.requireNonNull(id);
-      this.id = id;
     }
 
     public void name(String name) {
@@ -134,18 +149,18 @@ public class Product {
       this.price = price;
     }
 
-    public void expiredDate(OffsetDateTime expiredDate) {
+    public void expiredDate(LocalDate expiredDate) {
       Objects.requireNonNull(expiredDate);
       this.expiredDate = expiredDate;
     }
 
-    public void fridge(Fridge fridge) {
+    public void fridge(String fridge) {
       this.fridge = fridge;
     }
 
     public Product create() {
       return new Product(
-          id, name, typeProduct, count, barcode, price, expiredDate, fridge
+          name, typeProduct, count, barcode, price, expiredDate, fridge
       );
     }
   }

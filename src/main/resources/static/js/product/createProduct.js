@@ -1,11 +1,16 @@
 function createProduct() {
   event.preventDefault();
   let name = document.getElementById('name').value;
+  let fridge_id = document.getElementById('fridge_id').value;
   let file = document.getElementById('file').files[0];
   let barcode = document.getElementById('barcode').value;
   let expired_date = document.getElementById('expired_date').value;
   let price = document.getElementById('price').value;
   let count = document.getElementById('count').value;
+
+  if (!validateFields(fridge_id, count, expired_date)) {
+    return;
+  }
 
   let xhr = new XMLHttpRequest();
   xhr.open("POST", "/iot/products");
@@ -17,7 +22,8 @@ function createProduct() {
     expired_date: expired_date,
     price: price,
     count: count,
-    file: file
+    file: file,
+    fridge_id: fridge_id
   };
   let body = JSON.stringify(request);
 
@@ -30,12 +36,30 @@ function createProduct() {
   if (document.getElementById('file').files.length > 0) {
     getBase64(file, function (result) {
       request.file = result.replace(/^data:image\/(png|jpg);base64,/, "");
-      let body = JSON.stringify(request);
-      sendData(xhr, body);
+      sendData(xhr, JSON.stringify(request));
     });
   } else {
     sendData(xhr, body);
   }
+}
+
+function validateFields(fridgeId, count, expiredDate) {
+  let isValid = true;
+  if (fridgeId.length === 0) {
+    document.getElementById('fridge_id').classList.add("is-invalid");
+    isValid = false;
+  }
+
+  if (count.length === 0) {
+    document.getElementById('count').classList.add("is-invalid");
+    isValid = false;
+  }
+
+  if (expiredDate.length === 0) {
+    document.getElementById('expired_date').classList.add("is-invalid");
+    isValid = false;
+  }
+  return isValid;
 }
 
 function sendData(xhr, body) {

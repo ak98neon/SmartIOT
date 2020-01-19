@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smart.iot.kit.entity.TypeProduct;
-import java.time.OffsetDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = Include.NON_NULL)
@@ -15,7 +14,7 @@ public class CreateProductRequest {
   @JsonProperty("count")
   private Integer count;
   @JsonProperty("expired_date")
-  private OffsetDateTime expiredDate;
+  private String expiredDate;
   @JsonProperty("price")
   private Long price;
   @JsonProperty("type_product")
@@ -33,7 +32,7 @@ public class CreateProductRequest {
   }
 
   @JsonCreator
-  public CreateProductRequest(Integer count, OffsetDateTime expiredDate, Long price,
+  public CreateProductRequest(Integer count, String expiredDate, Long price,
       TypeProduct typeProduct, String name, String barcodeReq, String fridgeId,
       String file) {
     this.count = count;
@@ -54,7 +53,7 @@ public class CreateProductRequest {
     return count;
   }
 
-  public OffsetDateTime getExpiredDate() {
+  public String getExpiredDate() {
     return expiredDate;
   }
 

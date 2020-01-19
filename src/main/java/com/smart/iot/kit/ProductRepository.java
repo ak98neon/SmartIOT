@@ -1,14 +1,10 @@
 package com.smart.iot.kit;
 
 import com.smart.iot.kit.entity.Product;
-import java.util.Optional;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends MongoRepository<Product, String> {
+public interface ProductRepository extends JpaRepository<Product, String>, ProductRepositoryCustom {
 
-  Optional<Product> findById(String id);
-
-  Optional<Product> findByBarcode(String barcode);
 }

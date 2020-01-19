@@ -1,7 +1,7 @@
 package com.smart.iot.kit.entity;
 
 public enum TypeProduct {
-  LIQUID("luquid"),
+  LIQUID("liquid"),
   SOLID("solid"),
   NONE("none");
 

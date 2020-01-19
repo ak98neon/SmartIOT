@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface FridgeRepository extends MongoRepository<Fridge, String> {
 
   Optional<Fridge> findById(String id);
+
+  Optional<Fridge> findByName(String name);
 }

@@ -29,8 +29,11 @@
       <form id="createProductForm" method="POST" action="/iot/products"
             enctype="multipart/form-data" onsubmit="createProduct()">
         <div class="form-group">
-          <label for="file">Select a barcode</label>
-          <input type="file" class="form-control-file" id="file">
+          <label for="fridge_id">Fridge name</label>
+          <input type="text" id="fridge_id" class="form-control" placeholder="Fridge name">
+          <div class="invalid-feedback">
+            Field must be not empty!
+          </div>
         </div>
         <div class="form-group">
           <label for="name">Name</label>
@@ -42,11 +45,19 @@
         </div>
         <div class="form-group">
           <label for="expired_date">Expired Date</label>
-          <input type="text" id="expired_date" class="form-control" placeholder="Expired Date">
+          <input type="date" id="expired_date" class="form-control" placeholder="Expired Date">
+          <div class="invalid-feedback">
+            Field must be not empty!
+          </div>
         </div>
         <div class="form-group">
-          <label for="type_product">Type of Product</label>
-          <input type="text" id="type_product" class="form-control" placeholder="Type">
+          <label class="my-1 mr-2" for="typeOfProduct">Type of product</label>
+          <select class="custom-select mr-sm-2" id="typeOfProduct">
+            <option selected>Type</option>
+            <option value="1">None</option>
+            <option value="2">Solid</option>
+            <option value="3">Liquid</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="price">Price</label>
@@ -55,6 +66,13 @@
         <div class="form-group">
           <label for="count">Count</label>
           <input type="text" id="count" class="form-control" placeholder="Count">
+          <div class="invalid-feedback">
+            Field must be not empty!
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="file">Select a barcode</label>
+          <input type="file" class="form-control-file" id="file">
         </div>
         <button class="btn btn-primary">Upload</button>
       </form>
