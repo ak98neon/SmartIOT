@@ -7,7 +7,8 @@
 <div th:fragment="header">
   <nav class="navbar navbar-expand-lg fixed-top shadow navbar-light bg-white">
     <div class="container-fluid">
-      <div class="d-flex align-items-center"><a th:href="@{/iot/}" class="navbar-brand py-1"><img style="width: 50px; height: 40px"
+      <div class="d-flex align-items-center"><a th:href="@{/iot/}" class="navbar-brand py-1"><img
+          style="width: 50px; height: 40px"
           th:src="@{/image/iot.logo.png}"
           alt="Directory logo"></a>
         <form action="#" id="search" class="form-inline d-none d-sm-flex">
@@ -23,9 +24,10 @@
       </div>
       <button type="button" data-toggle="collapse" data-target="#navbarCollapse"
               aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"
-              class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
+              class="navbar-toggler navbar-toggler-right"><i class="material-icons">menu</i>
+      </button>
     </div>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" th:href="@{/iot/}">Home <span class="sr-only">(current)</span></a>

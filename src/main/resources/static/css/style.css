@@ -28,6 +28,16 @@
   .home {
     min-height: 600px; } }
 
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width: 321px) {
+  .home {
+    min-height: 600px; } }
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 320px) {
+  .home {
+    min-height: 600px; } }
+
 .fridges {
   background: #e0a944; }
   .fridges .content {
@@ -73,5 +83,15 @@
         display: flex; }
       .products .content .product .badge {
         margin-top: 10px; }
+
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width: 321px) {
+  .navbar-toggler {
+    border: none; } }
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 320px) {
+  .navbar-toggler {
+    border: none; } }
 
 /*# sourceMappingURL=../../../../../target/style.css.map */
