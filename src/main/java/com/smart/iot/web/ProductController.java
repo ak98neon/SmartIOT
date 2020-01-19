@@ -42,9 +42,9 @@ public class ProductController {
     return "product/newProduct";
   }
 
-  @PostMapping("/{id}/delete")
-  public String removeProduct(@PathVariable String id) {
+  @PostMapping("/{id}/delete/fridge/{fridgeId}")
+  public String removeProduct(@PathVariable String id, @PathVariable String fridgeId) {
     iotService.deleteItemFromFridge(id);
-    return "redirect:product/listProducts";
+    return "redirect:/iot/products/" + fridgeId;
   }
 }

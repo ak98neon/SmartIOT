@@ -30,7 +30,7 @@
       <span class="text-center" th:text="${product.expiredDate}"> Expired Date </span>
       <div class="product-action">
         <form class="add-product-form" method="POST"
-              th:action="@{'/iot/products/' + ${product.id}} + '/delete'">
+              th:action="@{'/iot/products/' + ${product.id} + '/delete/fridge/' + ${product.fridgeId}}">
           <button type="submit" name="submit" value="value" class="btn btn-primary btn-sm">
             <i class="material-icons">
               remove_shopping_cart

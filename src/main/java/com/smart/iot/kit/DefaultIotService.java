@@ -137,9 +137,11 @@ public class DefaultIotService implements IotService {
     if (productItem.isPresent()) {
       Optional<Fridge> fridge = fridgeRepository.findById(productItem.get().getFridge().getId());
       productItemRepository.deleteById(id);
+
       Optional<ProductItem> first = fridge.get().getProductList().stream()
           .filter(x -> x.getId().equals(id)).findFirst();
       fridge.get().getProductList().remove(first.get());
+      fridgeRepository.save(fridge.get());
       return productItem.get();
     }
     return null;
