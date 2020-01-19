@@ -1,18 +1,23 @@
 package com.smart.iot.web;
 
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+  private Logger logger = Logger.getLogger(GlobalExceptionHandler.class.getName());
+
   @ExceptionHandler(value = Exception.class)
-  public String handleException(HttpServletRequest request, Exception e) {
-    System.out.println(e.getMessage());
+  public String handleException(HttpServletRequest request, Exception e, Model model) {
+    logger.info(e.getMessage());
     HttpStatus status = getStatus(request);
-    return status.getReasonPhrase();
+    model.addAttribute("errorMsg", "Error: " + e.getMessage() + " status code: " + status);
+    return "error/errorPage";
   }
 
   private HttpStatus getStatus(HttpServletRequest request) {
