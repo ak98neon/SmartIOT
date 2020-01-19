@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ProductItem {
 
   @Id
+  private String id;
   private String name;
   private TypeProduct typeProduct;
   private Integer count;
@@ -21,8 +22,9 @@ public class ProductItem {
   @DBRef
   private Fridge fridge;
 
-  public ProductItem(String name, TypeProduct typeProduct, Integer count, String barcode,
-      Long price, LocalDate expiredDate, Fridge fridge) {
+  public ProductItem(String id, String name, TypeProduct typeProduct, Integer count,
+      String barcode, Long price, LocalDate expiredDate, Fridge fridge) {
+    this.id = id;
     this.name = name;
     this.typeProduct = typeProduct;
     this.count = count;
@@ -32,16 +34,18 @@ public class ProductItem {
     this.fridge = fridge;
   }
 
-  public static ProductItem ofProduct(Product product) {
+  public static ProductItem ofProduct(Product product, String id) {
     return new ProductItem(
+        id,
         product.getName(), product.getTypeProduct(), null, product.getBarcode(), product.getPrice(),
         null, null
     );
   }
 
   public static ProductItem ofProductFull(Product product, Integer count, LocalDate expiredDate,
-      Fridge fridge) {
+      Fridge fridge, String id) {
     return new ProductItem(
+        id,
         product.getName(), product.getTypeProduct(), count, product.getBarcode(),
         product.getPrice(),
         expiredDate, fridge
@@ -54,6 +58,10 @@ public class ProductItem {
 
   public static ProductItemBuilder builder() {
     return new ProductItemBuilder();
+  }
+
+  public String getId() {
+    return id;
   }
 
   public String getName() {
@@ -98,6 +106,7 @@ public class ProductItem {
 
   public static class ProductItemBuilder {
 
+    private String id;
     private String name;
     private TypeProduct typeProduct;
     private Integer count;
@@ -109,6 +118,11 @@ public class ProductItem {
     public ProductItemBuilder with(Consumer<ProductItemBuilder> consumer) {
       consumer.accept(this);
       return this;
+    }
+
+    public void id(String id) {
+      Objects.requireNonNull(id);
+      this.id = id;
     }
 
     public void name(String name) {
@@ -147,7 +161,7 @@ public class ProductItem {
 
     public ProductItem create() {
       return new ProductItem(
-          name, typeProduct, count, barcode, price, expiredDate, fridge
+          id, name, typeProduct, count, barcode, price, expiredDate, fridge
       );
     }
   }

@@ -20,12 +20,13 @@
 </head>
 <body class="fridges">
 <header th:insert="~{/fragments/header :: header}"></header>
-<div th:each="fridge : ${fridges}" class="container content">
+<div class="container content">
   <div class="row justify-content-center">
-    <div class="fridge col border rounded">
+    <div th:each="fridge : ${fridges}" class="fridge col border rounded">
       <span class="text-center" th:text="${fridge.name}"> Name </span>
       <span class="badge badge-pill badge-danger">Expire</span>
-      <span class="text-center" th:text="'Products: ' + ${fridge.getProductList().size()}">Count</span>
+      <span class="text-center"
+            th:text="'Products: ' + ${fridge.getProductList().size()}">Count</span>
       <div class="fridge-action">
         <a class="btn btn-primary btn-sm" th:href="@{'/iot/products/' + ${fridge.id}}"><i
             class="material-icons">

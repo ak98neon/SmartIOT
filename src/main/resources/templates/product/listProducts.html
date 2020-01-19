@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
@@ -7,29 +7,39 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"
         crossorigin="anonymous">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <script type="text/javascript"
+          th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.bundle.js}"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.js}"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
   <title>List of products</title>
 </head>
-<body>
-<table>
-  <thead>
-  <tr>
-    <th> Name</th>
-    <th> Barcode</th>
-    <th> Count</th>
-    <th> Expired date</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:if="${products.empty}">
-    <td colspan="2"> No Products Available</td>
-  </tr>
-  <tr th:each="product : ${products}">
-    <td><span th:text="${product.name}"> Name </span></td>
-    <td><span th:text="${product.barcode}"> Barcode </span></td>
-    <td><span th:text="${product.count}"> Count </span></td>
-    <td><span th:text="${product.expiredDate}"> Expired date </span></td>
-  </tr>
-  </tbody>
-</table>
+<body class="products">
+<header th:insert="~{/fragments/header :: header}"></header>
+<div class="container content">
+  <div class="row justify-content-center">
+    <div th:each="product : ${products}" class="product col border rounded">
+      <span class="badge badge-pill badge-primary">In stock</span>
+      <span class="text-center" th:text="${product.name}"> Name </span>
+      <span class="text-center" th:text="${product.barcode}"> Barcode </span>
+      <span class="text-center" th:text="${product.count}"> Count </span>
+      <span class="text-center" th:text="${product.expiredDate}"> Expired Date </span>
+      <div class="product-action">
+        <form class="add-product-form" method="POST"
+              th:action="@{'/iot/products/' + ${product.id}} + '/delete'">
+          <button type="submit" name="submit" value="value" class="btn btn-primary btn-sm">
+            <i class="material-icons">
+              remove_shopping_cart
+            </i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

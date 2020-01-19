@@ -73,7 +73,8 @@ public class DefaultIotService implements IotService {
         Product byBarcode = productRepository.findByBarcode(barcode);
         if (byBarcode != null) {
           ProductItem productItem = ProductItem.ofProductFull(
-              byBarcode, count, ProductItem.parseExpiredDate(expiredDate), fridge
+              byBarcode, count, ProductItem.parseExpiredDate(expiredDate), fridge,
+              generateUniqueIdForProductItem()
           );
           productItemRepository.save(productItem);
           saveProductItemIntoFridge(productItem, fridge);
@@ -87,7 +88,8 @@ public class DefaultIotService implements IotService {
           Product save = productRepository.saveAndFlush(product);
 
           ProductItem productItem = ProductItem.ofProductFull(
-              save, count, ProductItem.parseExpiredDate(expiredDate), fridge
+              save, count, ProductItem.parseExpiredDate(expiredDate), fridge,
+              generateUniqueIdForProductItem()
           );
           productItemRepository.save(productItem);
           saveProductItemIntoFridge(productItem, fridge);
@@ -120,11 +122,27 @@ public class DefaultIotService implements IotService {
     Product saveAndFlush = productRepository.saveAndFlush(product);
 
     ProductItem productItem = ProductItem.ofProductFull(
-        saveAndFlush, count, ProductItem.parseExpiredDate(expiredDate), fridge
+        saveAndFlush, count, ProductItem.parseExpiredDate(expiredDate), fridge,
+        generateUniqueIdForProductItem()
     );
     productItemRepository.save(productItem);
     saveProductItemIntoFridge(productItem, fridge);
     return product;
+  }
+
+  @Transactional
+  @Override
+  public ProductItem deleteItemFromFridge(String id) {
+    Optional<ProductItem> productItem = productItemRepository.findById(id);
+    if (productItem.isPresent()) {
+      Optional<Fridge> fridge = fridgeRepository.findById(productItem.get().getFridge().getId());
+      productItemRepository.deleteById(id);
+      Optional<ProductItem> first = fridge.get().getProductList().stream()
+          .filter(x -> x.getId().equals(id)).findFirst();
+      fridge.get().getProductList().remove(first.get());
+      return productItem.get();
+    }
+    return null;
   }
 
   private void saveProductItemIntoFridge(ProductItem productItem, Fridge fridge) {
@@ -152,6 +170,14 @@ public class DefaultIotService implements IotService {
     String id = UUID.randomUUID().toString();
     if (fridgeRepository.findById(id).isPresent()) {
       return generateUniqueIdForFridge();
+    }
+    return id;
+  }
+
+  private String generateUniqueIdForProductItem() {
+    String id = UUID.randomUUID().toString();
+    if (productItemRepository.findById(id).isPresent()) {
+      return generateUniqueIdForProductItem();
     }
     return id;
   }

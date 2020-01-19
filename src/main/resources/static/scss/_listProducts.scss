@@ -1,10 +1,10 @@
-.fridges {
+.products {
   background: #e0a944;
 
   .content {
     margin-top: 64px;
 
-    .fridge {
+    .product {
       border-radius: 1.25rem !important;
       position: relative;
       display: flex;
@@ -14,17 +14,17 @@
       width: 200px;
       max-width: 200px;
       background: #ffffff;
-      
-      .fridge-action {
+
+      .product-action {
         width: 85%;
         justify-content: center;
         position: absolute;
         bottom: 8px;
         display: flex;
+      }
 
-        .add-product-form {
-          margin-left: 10px;
-        }
+      .badge {
+        margin-top: 10px;
       }
     }
   }

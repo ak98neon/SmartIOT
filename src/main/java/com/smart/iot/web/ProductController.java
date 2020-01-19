@@ -41,4 +41,10 @@ public class ProductController {
     model.addAttribute("fridgeName", byId.orElse(null).getName());
     return "product/newProduct";
   }
+
+  @PostMapping("/{id}/delete")
+  public String removeProduct(@PathVariable String id) {
+    iotService.deleteItemFromFridge(id);
+    return "redirect:product/listProducts";
+  }
 }
