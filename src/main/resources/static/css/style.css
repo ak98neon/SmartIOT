@@ -28,4 +28,26 @@
   .home {
     min-height: 600px; } }
 
+.fridges {
+  background: #e0a944; }
+  .fridges .content {
+    margin-top: 64px; }
+    .fridges .content .fridge {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin: 20px;
+      height: 200px;
+      width: 200px;
+      max-width: 200px;
+      background: #ffffff; }
+      .fridges .content .fridge .fridge-action {
+        width: 85%;
+        justify-content: center;
+        position: absolute;
+        bottom: 8px;
+        display: flex; }
+        .fridges .content .fridge .fridge-action .add-product-form {
+          margin-left: 10px; }
+
 /*# sourceMappingURL=../../../../../target/style.css.map */

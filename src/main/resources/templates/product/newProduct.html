@@ -13,9 +13,8 @@
 <form id="createProductForm" method="POST" action="/iot/products"
       enctype="multipart/form-data" onsubmit="createProduct()">
   <div class="form-group">
-    <label for="fridge_id">Fridge name</label>
     <input type="text" id="fridge_id" class="form-control" placeholder="Fridge name"
-           th:value="${fridgeName}">
+           th:value="${fridgeName}" hidden>
     <div class="invalid-feedback">
       Field must be not empty!
     </div>

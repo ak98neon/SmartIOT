@@ -8,35 +8,39 @@
   <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"
         crossorigin="anonymous">
   <link th:href="@{/css/style.css}" rel="stylesheet">
+  <script type="text/javascript"
+          th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.bundle.js}"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.js}"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
   <title>Fridges</title>
 </head>
-<body>
-<table>
-  <thead>
-  <tr>
-    <th> Id</th>
-    <th> Name</th>
-    <th> Products</th>
-    <th> Add</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:if="${fridges.empty}">
-    <td colspan="2"> No Fridges Available</td>
-  </tr>
-  <tr th:each="fridge : ${fridges}">
-    <td><span th:text="${fridge.id}"> ID </span></td>
-    <td><span th:text="${fridge.name}"> Name </span></td>
-    <td><a class="btn btn-primary" th:href="@{'/iot/products/' + ${fridge.id}}">Show products</a>
-    </td>
-    <td>
-      <form method="POST" th:action="@{'/iot/products/' + ${fridge.id}}">
-        <button type="submit" name="submit" value="value" class="btn btn-primary">Add product
-        </button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<body class="fridges">
+<header th:insert="~{/fragments/header :: header}"></header>
+<div th:each="fridge : ${fridges}" class="container content">
+  <div class="row justify-content-center">
+    <div class="fridge col border rounded">
+      <span class="text-center" th:text="${fridge.name}"> Name </span>
+      <span class="badge badge-pill badge-danger">Expire</span>
+      <span class="text-center" th:text="'Products: ' + ${fridge.getProductList().size()}">Count</span>
+      <div class="fridge-action">
+        <a class="btn btn-primary btn-sm" th:href="@{'/iot/products/' + ${fridge.id}}"><i
+            class="material-icons">
+          list
+        </i></a>
+        <form class="add-product-form" method="POST" th:action="@{'/iot/products/' + ${fridge.id}}">
+          <button type="submit" name="submit" value="value" class="btn btn-primary btn-sm"><i
+              class="material-icons">
+            library_add
+          </i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

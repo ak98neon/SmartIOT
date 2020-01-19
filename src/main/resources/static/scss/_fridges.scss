@@ -1,0 +1,30 @@
+.fridges {
+  background: #e0a944;
+
+  .content {
+    margin-top: 64px;
+
+    .fridge {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin: 20px;
+      height: 200px;
+      width: 200px;
+      max-width: 200px;
+      background: #ffffff;
+      
+      .fridge-action {
+        width: 85%;
+        justify-content: center;
+        position: absolute;
+        bottom: 8px;
+        display: flex;
+
+        .add-product-form {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
