@@ -2,6 +2,7 @@ package com.smart.iot.kit;
 
 import com.smart.iot.kit.entity.Fridge;
 import com.smart.iot.kit.entity.Product;
+import com.smart.iot.kit.entity.ProductItem;
 import com.smart.iot.kit.entity.TypeProduct;
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface IotService {
   List<Fridge> getAllFridges();
 
   Fridge findFridgeById(String id);
+
+  List<ProductItem> findAllProductsByFridgeId(String fridgeId);
 }

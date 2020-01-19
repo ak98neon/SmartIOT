@@ -1,13 +1,65 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Create new product</title>
 </head>
 <body>
-  <h1 th:text="${barcode}"></h1>
+  <form id="createProductForm" method="POST" action="/iot/products"
+        enctype="multipart/form-data" onsubmit="createProduct()">
+    <div class="form-group">
+      <label for="fridge_id">Fridge name</label>
+      <input type="text" id="fridge_id" class="form-control" placeholder="Fridge name">
+      <div class="invalid-feedback">
+        Field must be not empty!
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" class="form-control" placeholder="Name">
+    </div>
+    <div class="form-group">
+      <label for="barcode">Barcode</label>
+      <input type="text" id="barcode" class="form-control" placeholder="Barcode">
+    </div>
+    <div class="form-group">
+      <label for="expired_date">Expired Date</label>
+      <input type="date" id="expired_date" class="form-control" placeholder="Expired Date">
+      <div class="invalid-feedback">
+        Field must be not empty!
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="my-1 mr-2" for="typeOfProduct">Type of product</label>
+      <select class="custom-select mr-sm-2" id="typeOfProduct">
+        <option selected>Type</option>
+        <option value="1">None</option>
+        <option value="2">Solid</option>
+        <option value="3">Liquid</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input type="text" id="price" class="form-control" placeholder="Price">
+      <div class="invalid-feedback">
+        Field must be not empty!
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="count">Count</label>
+      <input type="text" id="count" class="form-control" placeholder="Count">
+      <div class="invalid-feedback">
+        Field must be not empty!
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="file">Select a barcode</label>
+      <input type="file" class="form-control-file" id="file">
+    </div>
+    <button class="btn btn-primary">Upload</button>
+  </form>
 </body>
 </html>

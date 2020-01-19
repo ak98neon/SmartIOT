@@ -15,7 +15,8 @@
   <tr>
     <th> Id</th>
     <th> Name</th>
-    <th> Action</th>
+    <th> Products</th>
+    <th> Add</th>
   </tr>
   </thead>
   <tbody>
@@ -25,59 +26,12 @@
   <tr th:each="fridge : ${fridges}">
     <td><span th:text="${fridge.id}"> ID </span></td>
     <td><span th:text="${fridge.name}"> Name </span></td>
+    <td><a class="btn btn-primary" th:href="@{'/iot/products/' + ${fridge.id}}">Show products</a>
+    </td>
     <td>
-      <form id="createProductForm" method="POST" action="/iot/products"
-            enctype="multipart/form-data" onsubmit="createProduct()">
-        <div class="form-group">
-          <label for="fridge_id">Fridge name</label>
-          <input type="text" id="fridge_id" class="form-control" placeholder="Fridge name">
-          <div class="invalid-feedback">
-            Field must be not empty!
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" class="form-control" placeholder="Name">
-        </div>
-        <div class="form-group">
-          <label for="barcode">Barcode</label>
-          <input type="text" id="barcode" class="form-control" placeholder="Barcode">
-        </div>
-        <div class="form-group">
-          <label for="expired_date">Expired Date</label>
-          <input type="date" id="expired_date" class="form-control" placeholder="Expired Date">
-          <div class="invalid-feedback">
-            Field must be not empty!
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="my-1 mr-2" for="typeOfProduct">Type of product</label>
-          <select class="custom-select mr-sm-2" id="typeOfProduct">
-            <option selected>Type</option>
-            <option value="1">None</option>
-            <option value="2">Solid</option>
-            <option value="3">Liquid</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="price">Price</label>
-          <input type="text" id="price" class="form-control" placeholder="Price">
-          <div class="invalid-feedback">
-            Field must be not empty!
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="count">Count</label>
-          <input type="text" id="count" class="form-control" placeholder="Count">
-          <div class="invalid-feedback">
-            Field must be not empty!
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="file">Select a barcode</label>
-          <input type="file" class="form-control-file" id="file">
-        </div>
-        <button class="btn btn-primary">Upload</button>
+      <form method="POST" th:action="@{'/iot/products/' + ${fridge.id}}">
+        <button type="submit" name="submit" value="value" class="btn btn-primary">Add product
+        </button>
       </form>
     </td>
   </tr>

@@ -76,11 +76,11 @@ public class DefaultIotService implements IotService {
               byBarcode, count, ProductItem.parseExpiredDate(expiredDate), fridge
           );
           productItemRepository.save(productItem);
-          fridge.getProductList().add(productItem);
+          saveProductItemIntoFridge(productItem, fridge);
         } else {
           product = new ProductCreator().with(x -> {
             x.barcode(barcode);
-            x.price(0L);
+            x.price(price);
             x.typeProduct(TypeProduct.NONE);
             x.name(name);
           }).create();
@@ -90,7 +90,7 @@ public class DefaultIotService implements IotService {
               save, count, ProductItem.parseExpiredDate(expiredDate), fridge
           );
           productItemRepository.save(productItem);
-          fridge.getProductList().add(productItem);
+          saveProductItemIntoFridge(productItem, fridge);
         }
         fridgeRepository.save(fridge);
       }
@@ -123,9 +123,19 @@ public class DefaultIotService implements IotService {
         saveAndFlush, count, ProductItem.parseExpiredDate(expiredDate), fridge
     );
     productItemRepository.save(productItem);
-    fridge.getProductList().add(productItem);
-    fridgeRepository.save(fridge);
+    saveProductItemIntoFridge(productItem, fridge);
     return product;
+  }
+
+  private void saveProductItemIntoFridge(ProductItem productItem, Fridge fridge) {
+    if (fridge.getProductList().contains(productItem)) {
+      int i = fridge.getProductList().indexOf(productItem);
+      ProductItem existProductItem = fridge.getProductList().get(i);
+      existProductItem.setCount(existProductItem.getCount() + productItem.getCount());
+    } else {
+      fridge.getProductList().add(productItem);
+    }
+    fridgeRepository.save(fridge);
   }
 
   @Override
@@ -136,6 +146,12 @@ public class DefaultIotService implements IotService {
   @Override
   public Fridge findFridgeById(String id) {
     return fridgeRepository.findById(id).orElse(null);
+  }
+
+  @Override
+  public List<ProductItem> findAllProductsByFridgeId(String fridgeId) {
+    Optional<Fridge> byId = fridgeRepository.findById(fridgeId);
+    return byId.isPresent() ? byId.get().getProductList() : Collections.emptyList();
   }
 
   private String generateUniqueIdForFridge() {

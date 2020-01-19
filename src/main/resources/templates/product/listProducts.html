@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>List of products</title>
+</head>
+<body>
+<table>
+  <thead>
+  <tr>
+    <th> Name</th>
+    <th> Barcode</th>
+    <th> Count</th>
+    <th> Expired date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:if="${products.empty}">
+    <td colspan="2"> No Products Available</td>
+  </tr>
+  <tr th:each="product : ${products}">
+    <td><span th:text="${product.name}"> Name </span></td>
+    <td><span th:text="${product.barcode}"> Barcode </span></td>
+    <td><span th:text="${product.count}"> Count </span></td>
+    <td><span th:text="${product.expiredDate}"> Expired date </span></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
