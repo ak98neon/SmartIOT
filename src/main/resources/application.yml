@@ -38,3 +38,5 @@ iot:
   qr:
     width: 350
     height: 350
+  security:
+    secret: "secret"
