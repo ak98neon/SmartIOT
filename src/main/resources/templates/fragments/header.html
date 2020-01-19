@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerfiles">
+  <meta charset="UTF-8"/>
+</head>
+<body>
+<div th:fragment="header">
+  <nav class="navbar navbar-expand-lg fixed-top shadow navbar-light bg-white">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center"><a th:href="@{/iot/}" class="navbar-brand py-1"><img
+          src="https://d19m59y37dris4.cloudfront.net/directory/1-4/img/logo.svg"
+          alt="Directory logo"></a>
+        <form action="#" id="search" class="form-inline d-none d-sm-flex">
+          <div
+              class="input-label-absolute input-label-absolute-left input-reset input-expand ml-lg-2 ml-xl-3">
+            <label for="search_search" class="label-absolute"><i class="fa fa-search"></i><span
+                class="sr-only">What are you looking for?</span></label>
+            <input id="search_search" placeholder="Search" aria-label="Search"
+                   class="form-control form-control-sm border-0 shadow-0 bg-gray-200">
+            <button type="reset" class="btn btn-reset btn-sm"><i class="fa-times fas"></i></button>
+          </div>
+        </form>
+      </div>
+      <button type="button" data-toggle="collapse" data-target="#navbarCollapse"
+              aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"
+              class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" th:href="@{/iot/}">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFridges" role="button"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Fridge
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownFridges">
+            <a class="dropdown-item" th:href="@{/iot/fridges}">Show</a>
+            <a class="dropdown-item" th:href="@{/iot/fridges}">Create</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle disabled" href="#" id="navbarDropdownProducts"
+             role="button"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Product
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownProducts">
+            <a class="dropdown-item" th:href="@{/iot/products}">Create</a>
+            <a class="dropdown-item" th:href="@{/iot/products}">Delete</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled text-nowrap" th:href="@{/auth/login}">Log in</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled text-nowrap" th:href="@{/auth/signup}">Sign up</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+</body>
+</html>

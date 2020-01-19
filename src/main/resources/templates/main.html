@@ -5,16 +5,31 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Main</title>
+  <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"
+        crossorigin="anonymous">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.bundle.js}"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.js}"></script>
+  <title>Home</title>
 </head>
 <body>
-  <h1>Welcome in your smart home</h1>
-  <a th:href="@{/iot/fridges}">Get all fridges</a>
-  <form action="/iot/fridges" method="POST">
-    <label for="fridge_name">
-      <input type="text" id="fridge_name" name="fridge_name">
-    </label>
-    <button type="submit">Create new fridge</button>
-  </form>
+  <header th:insert="~{/fragments/header :: header}"></header>
+  <section class="home">
+    <div class="container py-6 py-md-7 text-black">
+      <h1>Hi</h1>
+      <div class="main_image"></div>
+    </div>
+  </section>
+<!--  <h1>Welcome in your smart home</h1>-->
+<!--  <a th:href="@{/iot/fridges}">Get all fridges</a>-->
+<!--  <form action="/iot/fridges" method="POST">-->
+<!--    <label for="fridge_name">-->
+<!--      <input type="text" id="fridge_name" name="fridge_name">-->
+<!--    </label>-->
+<!--    <button type="submit">Create new fridge</button>-->
+<!--  </form>-->
 </body>
 </html>
