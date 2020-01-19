@@ -9,8 +9,8 @@ public interface IotService {
 
   Fridge registerFridge(String baseUrl, String name);
 
-  Product createProductByBarcode(Integer count, String expiredDate,
-      String fridgeId, byte[] imageBarcode);
+  Product createProductByBarcode(String name, Integer count, String expiredDate,
+      String fridgeId, byte[] imageBarcode, Long price);
 
   Product createProductDefault(Integer count, String expiredDate, Long price,
       TypeProduct typeProduct, String name, String barcode, String fridgeId);

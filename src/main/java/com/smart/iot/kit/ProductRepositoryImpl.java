@@ -14,13 +14,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
   @Override
   public Product findByBarcode(String barcode) {
     final String query = "SELECT * FROM product p WHERE p.barcode = ?";
-    try {
-      Object singleResult = entityManager.createNativeQuery(query).setParameter(1, barcode)
-          .getSingleResult();
-      return (Product) singleResult;
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-    return null;
+    return (Product) entityManager.createNativeQuery(query, Product.class)
+        .setParameter(1, barcode)
+        .getSingleResult();
   }
 }

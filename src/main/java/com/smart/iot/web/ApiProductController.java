@@ -29,10 +29,12 @@ public class ApiProductController {
     if (!StringUtils.isEmptyOrWhitespace(createProductRequest.getFile())) {
       byte[] imageByte = Base64.decodeBase64(createProductRequest.getFile());
       return iotService
-          .createProductByBarcode(createProductRequest.getCount(),
+          .createProductByBarcode(createProductRequest.getName(),
+              createProductRequest.getCount(),
               createProductRequest.getExpiredDate(),
               createProductRequest.getFridgeId(),
-              imageByte
+              imageByte,
+              createProductRequest.getPrice()
           );
     }
     return iotService

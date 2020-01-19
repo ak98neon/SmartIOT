@@ -29,12 +29,16 @@ public class DefaultIotService implements IotService {
 
   private FridgeRepository fridgeRepository;
   private ProductRepository productRepository;
+  private ProductItemRepository productItemRepository;
   private QrCodeGenerator qrCodeGenerator;
 
+
   public DefaultIotService(FridgeRepository fridgeRepository,
-      ProductRepository productRepository, QrCodeGenerator qrCodeGenerator) {
+      ProductRepository productRepository,
+      ProductItemRepository productItemRepository, QrCodeGenerator qrCodeGenerator) {
     this.fridgeRepository = fridgeRepository;
     this.productRepository = productRepository;
+    this.productItemRepository = productItemRepository;
     this.qrCodeGenerator = qrCodeGenerator;
   }
 
@@ -54,8 +58,8 @@ public class DefaultIotService implements IotService {
 
   @Transactional
   @Override
-  public Product createProductByBarcode(Integer count, String expiredDate, String fridgeId,
-      byte[] imageBarcode) {
+  public Product createProductByBarcode(String name, Integer count, String expiredDate,
+      String fridgeId, byte[] imageBarcode, Long price) {
     InputStream inputStream = new ByteArrayInputStream(imageBarcode);
     Product product = null;
 
@@ -71,19 +75,21 @@ public class DefaultIotService implements IotService {
           ProductItem productItem = ProductItem.ofProductFull(
               byBarcode, count, ProductItem.parseExpiredDate(expiredDate), fridge
           );
+          productItemRepository.save(productItem);
           fridge.getProductList().add(productItem);
         } else {
           product = new ProductCreator().with(x -> {
             x.barcode(barcode);
             x.price(0L);
             x.typeProduct(TypeProduct.NONE);
-            x.name("");
+            x.name(name);
           }).create();
           Product save = productRepository.saveAndFlush(product);
 
           ProductItem productItem = ProductItem.ofProductFull(
               save, count, ProductItem.parseExpiredDate(expiredDate), fridge
           );
+          productItemRepository.save(productItem);
           fridge.getProductList().add(productItem);
         }
         fridgeRepository.save(fridge);
@@ -116,6 +122,7 @@ public class DefaultIotService implements IotService {
     ProductItem productItem = ProductItem.ofProductFull(
         saveAndFlush, count, ProductItem.parseExpiredDate(expiredDate), fridge
     );
+    productItemRepository.save(productItem);
     fridge.getProductList().add(productItem);
     fridgeRepository.save(fridge);
     return product;

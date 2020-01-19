@@ -8,7 +8,7 @@ function createProduct() {
   let price = document.getElementById('price').value;
   let count = document.getElementById('count').value;
 
-  if (!validateFields(fridge_id, count, expired_date)) {
+  if (!validateFields(name, fridge_id, count, expired_date, price)) {
     return;
   }
 
@@ -43,8 +43,13 @@ function createProduct() {
   }
 }
 
-function validateFields(fridgeId, count, expiredDate) {
+function validateFields(name, fridgeId, count, expiredDate, price) {
   let isValid = true;
+  if (name.length === 0) {
+    document.getElementById('name').classList.add("is-invalid");
+    isValid = false;
+  }
+
   if (fridgeId.length === 0) {
     document.getElementById('fridge_id').classList.add("is-invalid");
     isValid = false;
@@ -57,6 +62,11 @@ function validateFields(fridgeId, count, expiredDate) {
 
   if (expiredDate.length === 0) {
     document.getElementById('expired_date').classList.add("is-invalid");
+    isValid = false;
+  }
+
+  if (price.length === 0) {
+    document.getElementById('price').classList.add("is-invalid");
     isValid = false;
   }
   return isValid;
