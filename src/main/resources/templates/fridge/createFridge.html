@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"
+        crossorigin="anonymous">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <script type="text/javascript"
+          th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.bundle.js}"></script>
+  <script type="text/javascript"
+          th:src="@{/js/bootstrap.js}"></script>
+  <title>Create Fridge</title>
+</head>
+<body>
+  <form action="/iot/fridges" method="POST" class="form-inline my-2 my-lg-0">
+    <label for="fridge_name">
+      <input class="form-control mr-sm-2" type="text" id="fridge_name" name="fridge_name">
+    </label>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Create new fridge</button>
+  </form>
+</body>
+</html>

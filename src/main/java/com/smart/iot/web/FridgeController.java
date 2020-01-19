@@ -33,6 +33,11 @@ public class FridgeController {
     return "fridge/newFridge";
   }
 
+  @GetMapping("/create")
+  public String createFridgePage() {
+    return "fridge/createFridge";
+  }
+
   @GetMapping("/{id}")
   public Fridge getById(@PathVariable String id) {
     return iotService.findFridgeById(id);

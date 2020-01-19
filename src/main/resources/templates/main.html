@@ -19,19 +19,29 @@
 <body>
 <header th:insert="~{/fragments/header :: header}"></header>
 <section class="home">
-  <div class="text-black">
+  <div class="text-black main-img-block">
     <img class="main-image"
-        src="https://d19m59y37dris4.cloudfront.net/directory/1-4/img/photo/photo-1519974719765-e6559eac2575.jpg"
-        alt="Image">
+         src="https://d19m59y37dris4.cloudfront.net/directory/1-4/img/photo/photo-1519974719765-e6559eac2575.jpg"
+         alt="Image">
+  </div>
+  <div class="container py-6 py-md-7 text-white z-index-20">
+    <div class="row">
+      <div class="main-search col align-self-center">
+        <form action="#" method="get">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 d-flex align-items-center form-group">
+              <input type="text" name="search" placeholder="What are you searching for?"
+                     class="form-control border-0 shadow-0">
+            </div>
+            <div class="col-lg-2">
+              <button type="submit" class="search-btn btn btn-primary btn-block rounded-xl">Search
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </section>
-<!--  <h1>Welcome in your smart home</h1>-->
-<!--  <a th:href="@{/iot/fridges}">Get all fridges</a>-->
-<!--  <form action="/iot/fridges" method="POST">-->
-<!--    <label for="fridge_name">-->
-<!--      <input type="text" id="fridge_name" name="fridge_name">-->
-<!--    </label>-->
-<!--    <button type="submit">Create new fridge</button>-->
-<!--  </form>-->
 </body>
 </html>
