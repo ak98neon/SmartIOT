@@ -17,13 +17,13 @@ public class Fridge {
   private String name;
   private byte[] qrLink;
   @DBRef
-  private List<Product> productList;
+  private List<ProductItem> productList;
 
   public Fridge() {
   }
 
   public Fridge(String id, String name, byte[] qrLink,
-      List<Product> productList) {
+      List<ProductItem> productList) {
     this.id = id;
     this.name = name;
     this.qrLink = qrLink;
@@ -42,7 +42,7 @@ public class Fridge {
     return qrLink;
   }
 
-  public List<Product> getProductList() {
+  public List<ProductItem> getProductList() {
     return productList;
   }
 
@@ -61,7 +61,7 @@ public class Fridge {
     private String id;
     private String name;
     private byte[] link;
-    private List<Product> productList;
+    private List<ProductItem> productList;
 
     public Builder with(Consumer<Builder> builderConsumer) {
       builderConsumer.accept(this);
@@ -82,7 +82,7 @@ public class Fridge {
       this.link = link;
     }
 
-    public void productList(List<Product> products) {
+    public void productList(List<ProductItem> products) {
       this.productList = products;
     }
 

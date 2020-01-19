@@ -9,6 +9,7 @@ import com.smart.iot.kit.entity.Fridge;
 import com.smart.iot.kit.entity.Fridge.Builder;
 import com.smart.iot.kit.entity.Product;
 import com.smart.iot.kit.entity.Product.ProductCreator;
+import com.smart.iot.kit.entity.ProductItem;
 import com.smart.iot.kit.entity.TypeProduct;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -67,20 +68,23 @@ public class DefaultIotService implements IotService {
         logger.info("Get a product barcode: " + barcode);
         Product byBarcode = productRepository.findByBarcode(barcode);
         if (byBarcode != null) {
-          //TODO Must create a new product
-          fridge.getProductList().add(byBarcode);
+          ProductItem productItem = ProductItem.ofProductFull(
+              byBarcode, count, ProductItem.parseExpiredDate(expiredDate), fridge
+          );
+          fridge.getProductList().add(productItem);
         } else {
           product = new ProductCreator().with(x -> {
             x.barcode(barcode);
-            x.count(count);
-            x.expiredDate(Product.parseExpiredDate(expiredDate));
             x.price(0L);
             x.typeProduct(TypeProduct.NONE);
             x.name("");
-            x.fridge(fridge.getId());
           }).create();
           Product save = productRepository.saveAndFlush(product);
-          fridge.getProductList().add(save);
+
+          ProductItem productItem = ProductItem.ofProductFull(
+              save, count, ProductItem.parseExpiredDate(expiredDate), fridge
+          );
+          fridge.getProductList().add(productItem);
         }
         fridgeRepository.save(fridge);
       }
@@ -99,8 +103,6 @@ public class DefaultIotService implements IotService {
 
     Product product = new ProductCreator().with(x -> {
       x.barcode(barcode);
-      x.count(count);
-      x.expiredDate(Product.parseExpiredDate(expiredDate));
       x.price(price);
       if (typeProduct == null) {
         x.typeProduct(TypeProduct.NONE);
@@ -108,10 +110,13 @@ public class DefaultIotService implements IotService {
         x.typeProduct(typeProduct);
       }
       x.name(name);
-      x.fridge(fridge.getId());
     }).create();
     Product saveAndFlush = productRepository.saveAndFlush(product);
-    fridge.getProductList().add(saveAndFlush);
+
+    ProductItem productItem = ProductItem.ofProductFull(
+        saveAndFlush, count, ProductItem.parseExpiredDate(expiredDate), fridge
+    );
+    fridge.getProductList().add(productItem);
     fridgeRepository.save(fridge);
     return product;
   }
