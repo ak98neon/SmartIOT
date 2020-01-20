@@ -1,12 +1,13 @@
 package com.smart.iot.kit.entity;
 
+import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "user")
+@Entity(name = "users")
 public class User extends BaseAuditEntity {
 
   @Id
@@ -26,6 +27,8 @@ public class User extends BaseAuditEntity {
     this.password = password;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    super.setCreatedAt(OffsetDateTime.now());
+    super.setUpdatedAt(OffsetDateTime.now());
   }
 
   public Long getId() {
@@ -40,15 +43,15 @@ public class User extends BaseAuditEntity {
     return password;
   }
 
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
   public String getEmail() {
     return email;
   }
 
   public String getPhoneNumber() {
     return phoneNumber;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 }

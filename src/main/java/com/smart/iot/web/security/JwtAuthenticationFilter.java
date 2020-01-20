@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     byte[] signingKey = secret.getBytes();
 
     String token = Jwts.builder()
-        .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
+        .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS256)
         .setHeaderParam("typ", "JWT")
         .setIssuer("IOT_SYSTEM")
         .setAudience("secure-app")

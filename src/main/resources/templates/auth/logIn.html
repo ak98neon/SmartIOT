@@ -16,6 +16,25 @@
   <title>LogIn</title>
 </head>
 <body>
-
+<form id="logIn" method="POST" action="#" th:action="@{/auth/logIn}" th:object="${user}"
+      enctype="utf8">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input name="username" type="text" th:field="*{username}" id="username" class="form-control"
+           placeholder="Username">
+    <div class="invalid-feedback">
+      Field must be not empty!
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input name="password" type="text" th:field="*{password}" id="password" class="form-control"
+           placeholder="Password">.
+    <div class="invalid-feedback">
+      Field must be not empty!
+    </div>
+  </div>
+  <input class="btn btn-primary" type="submit" value="Log In"/>
+</form>
 </body>
 </html>

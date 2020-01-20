@@ -28,7 +28,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.cors().and()
         .csrf().disable()
         .authorizeRequests()
-        .antMatchers("/iot/", "/auth/**", "/resources/**").permitAll()
+        .antMatchers("/iot", "/auth/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .addFilter(new JwtAuthenticationFilter(authenticationManager(), secret))
@@ -41,7 +41,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   public void configure(WebSecurity web) throws Exception {
     web
         .ignoring()
-        .antMatchers("/resources/**");
+        .antMatchers("/resources/**", "/css/**", "/js/**", "/image/**", "/scss/**");
   }
 
   @Bean

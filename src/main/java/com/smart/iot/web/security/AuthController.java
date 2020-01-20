@@ -1,11 +1,13 @@
 package com.smart.iot.web.security;
 
 import com.smart.iot.kit.UserService;
-import com.smart.iot.web.dto.UserSignUpDto;
+import com.smart.iot.web.dto.UserLogIn;
+import com.smart.iot.web.dto.UserSignUp;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -18,24 +20,30 @@ public class AuthController {
     this.userService = userService;
   }
 
-  @GetMapping("/login")
-  public String logInPage() {
+  @GetMapping("/logIn")
+  public String logInPage(Model model) {
+    UserLogIn userLogIn = new UserLogIn();
+    model.addAttribute("user", userLogIn);
     return "auth/logIn";
   }
 
-  @PostMapping("/login")
-  public String logIn() {
-    return "redirect:/iot/";
+  @PostMapping("/logIn")
+  public String logIn(@ModelAttribute("user") UserLogIn userLogIn, Model model) {
+    String token = userService.authenticateUser(userLogIn);
+    model.addAttribute("token", token);
+    return "redirect:/iot";
   }
 
   @GetMapping("/signup")
-  public String signUpPage() {
+  public String signUpPage(Model model) {
+    UserSignUp userSignUp = new UserSignUp();
+    model.addAttribute("user", userSignUp);
     return "auth/signUp";
   }
 
   @PostMapping("/signup")
-  public String signUp(@RequestBody UserSignUpDto userSignUpDto) {
-    userService.createUser(userSignUpDto.toUser());
-    return "redirect:/iot/";
+  public String signUp(@ModelAttribute("user") UserSignUp userSignUp) {
+    userService.createUser(userSignUp.toUser());
+    return "redirect:/iot";
   }
 }
