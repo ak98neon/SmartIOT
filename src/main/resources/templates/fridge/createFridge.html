@@ -15,11 +15,13 @@
 </head>
 <body>
   <header th:insert="~{/fragments/header :: header}"></header>
-  <form action="/iot/fridges" method="POST" class="form-inline my-2 my-lg-0">
-    <label for="fridge_name">
-      <input class="form-control mr-sm-2" type="text" id="fridge_name" name="fridge_name">
-    </label>
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Create new fridge</button>
-  </form>
+  <div class="container create-fridge">
+    <form action="/iot/fridges" method="POST" class="form-inline my-2 my-lg-0">
+      <label for="fridge_name">
+        <input class="form-control mr-sm-2" type="text" id="fridge_name" name="fridge_name">
+      </label>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Create new fridge</button>
+    </form>
+  </div>
 </body>
 </html>

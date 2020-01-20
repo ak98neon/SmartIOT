@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class UserService {
 
   private PasswordEncoder passwordEncoder;
   private UserRepository userRepository;
+  @Value("${iot.security.secret:secret}")
+  private String secret;
 
   public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
     this.passwordEncoder = passwordEncoder;
@@ -27,7 +30,7 @@ public class UserService {
   public String authenticateUser(final UserLogIn userLogIn) {
     User userByUsername = findUserByUsername(userLogIn.getUsername());
     return Jwts.builder()
-        .signWith(Keys.hmacShaKeyFor(userByUsername.getPassword().getBytes(StandardCharsets.UTF_8)),
+        .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)),
             SignatureAlgorithm.HS256)
         .setHeaderParam("typ", "JWT")
         .setIssuer("IOT_SYSTEM")

@@ -39,4 +39,4 @@ iot:
     width: 350
     height: 350
   security:
-    secret: "secret"
+    secret: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"

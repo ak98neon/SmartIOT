@@ -19,8 +19,10 @@
   <title>Create new fridge</title>
 </head>
 <body>
-  <header th:insert="~{/fragments/header :: header}"></header>
+<header th:insert="~{/fragments/header :: header}"></header>
+<div class="container">
   <h1>Your fridge successfully registered</h1>
   <img th:src="${qrCode} == null ? _ : @{'data:image/png;base64,'+${qrCode}}" alt="QrCode">
+</div>
 </body>
 </html>
