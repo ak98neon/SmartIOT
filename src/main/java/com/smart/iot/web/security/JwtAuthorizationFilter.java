@@ -1,7 +1,5 @@
 package com.smart.iot.web.security;
 
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -11,11 +9,16 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import io.micrometer.core.instrument.util.StringUtils;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,14 +49,20 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   }
 
   private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-    String token = request.getHeader("Authorization");
-    if (StringUtils.isNotEmpty(token) && token.startsWith("Bearer ")) {
+    if (request.getCookies() == null) {
+      return null;
+    }
+
+    Optional<String> token = Arrays.stream(request.getCookies())
+        .filter(x -> x.getName().equals("Authorization")).map(Cookie::getValue).findFirst();
+    if (token.isPresent() && StringUtils.isNotEmpty(token.get()) && token.get()
+        .startsWith("Bearer ")) {
       try {
         byte[] signingKey = secret.getBytes();
 
         Jws<Claims> parsedToken = Jwts.parser()
             .setSigningKey(signingKey)
-            .parseClaimsJws(token.replace("Bearer ", ""));
+            .parseClaimsJws(token.get().replace("Bearer ", ""));
 
         String username = parsedToken
             .getBody()

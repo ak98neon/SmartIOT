@@ -27,13 +27,6 @@ public class AuthController {
     return "auth/logIn";
   }
 
-  @PostMapping("/logIn")
-  public String logIn(@ModelAttribute("user") UserLogIn userLogIn, Model model) {
-    String token = userService.authenticateUser(userLogIn);
-    model.addAttribute("token", token);
-    return "redirect:/iot";
-  }
-
   @GetMapping("/signup")
   public String signUpPage(Model model) {
     UserSignUp userSignUp = new UserSignUp();

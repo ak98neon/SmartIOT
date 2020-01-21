@@ -36,10 +36,10 @@ function createProduct() {
   if (document.getElementById('file').files.length > 0) {
     getBase64(file, function (result) {
       request.file = result.replace(/^data:image\/(png|jpg);base64,/, "");
-      sendData(xhr, JSON.stringify(request));
+      sendRequestWithJwt(xhr, JSON.stringify(request));
     });
   } else {
-    sendData(xhr, body);
+    sendRequestWithJwt(xhr, body);
   }
 }
 
@@ -70,10 +70,6 @@ function validateFields(name, fridgeId, count, expiredDate, price) {
     isValid = false;
   }
   return isValid;
-}
-
-function sendData(xhr, body) {
-  xhr.send(body);
 }
 
 function getBase64(file, cb) {
