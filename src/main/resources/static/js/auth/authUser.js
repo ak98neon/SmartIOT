@@ -14,7 +14,6 @@ function authUser() {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       let jwt = xhr.responseText;
-      saveJwtTokenInLocalStorage(jwt);
       window.location.href = "http://" + window.location.host + "/iot";
     }
   };

@@ -3,6 +3,8 @@ package com.smart.iot.web.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -20,8 +22,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private JwtUserDetailsService jwtUserDetailsService;
   @Value("${iot.security.secret:secret}")
   private String secret;
+
+  public WebSecurityConfiguration(
+      JwtUserDetailsService jwtUserDetailsService) {
+    this.jwtUserDetailsService = jwtUserDetailsService;
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -31,7 +44,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/iot", "/auth/**").permitAll()
         .anyRequest().authenticated()
         .and()
-        .addFilter(new JwtAuthenticationFilter(authenticationManager(), secret))
         .addFilter(new JwtAuthorizationFilter(authenticationManager(), secret))
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -47,6 +59,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public AuthenticationManager customAuthenticationManager() throws Exception {
+    return authenticationManager();
   }
 
   @Bean

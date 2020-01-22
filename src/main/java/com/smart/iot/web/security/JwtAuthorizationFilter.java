@@ -54,9 +54,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     Optional<String> token = Arrays.stream(request.getCookies())
-        .filter(x -> x.getName().equals("Authorization")).map(Cookie::getValue).findFirst();
-    if (token.isPresent() && StringUtils.isNotEmpty(token.get()) && token.get()
-        .startsWith("Bearer ")) {
+        .filter(x -> x.getName().equals("jwt")).map(Cookie::getValue).findFirst();
+    if (token.isPresent() && StringUtils.isNotEmpty(token.get())) {
       try {
         byte[] signingKey = secret.getBytes();
 

@@ -36,11 +36,15 @@ function createProduct() {
   if (document.getElementById('file').files.length > 0) {
     getBase64(file, function (result) {
       request.file = result.replace(/^data:image\/(png|jpg);base64,/, "");
-      sendRequestWithJwt(xhr, JSON.stringify(request));
+      send(xhr, JSON.stringify(request));
     });
   } else {
-    sendRequestWithJwt(xhr, body);
+    send(xhr, body);
   }
+}
+
+function send(xhr, body) {
+  xhr.send(body);
 }
 
 function validateFields(name, fridgeId, count, expiredDate, price) {

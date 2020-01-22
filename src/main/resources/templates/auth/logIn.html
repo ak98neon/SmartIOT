@@ -17,7 +17,7 @@
 </head>
 <body>
 <form id="logIn" method="POST" action="#" th:action="@{/auth/logIn}" th:object="${user}"
-      enctype="utf8" onsubmit="authUser()">
+      enctype="utf8">
   <div class="form-group">
     <label for="username">Username</label>
     <input name="username" type="text" th:field="*{username}" id="username" class="form-control"
