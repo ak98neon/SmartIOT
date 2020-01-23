@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -46,14 +47,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .addFilter(new JwtAuthorizationFilter(authenticationManager(), secret))
         .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .logout().permitAll()
+        .logoutSuccessHandler(logoutSuccessHandler());
   }
 
   @Override
-  public void configure(WebSecurity web) throws Exception {
+  public void configure(WebSecurity web) {
     web
         .ignoring()
         .antMatchers("/resources/**", "/css/**", "/js/**", "/image/**", "/scss/**");
+  }
+
+  @Bean
+  public LogoutSuccessHandler logoutSuccessHandler() {
+    return new DefaultLogoutSuccessHandler();
   }
 
   @Bean
