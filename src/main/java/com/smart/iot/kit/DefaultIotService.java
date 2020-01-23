@@ -46,7 +46,7 @@ public class DefaultIotService implements IotService {
   @Override
   public Fridge registerFridge(String baseUrl, String name) {
     String id = generateUniqueIdForFridge();
-    String link = baseUrl + "/iot/fridges/" + id;
+    String link = baseUrl + "/iot/products/" + id;
     Fridge fridge = new Builder().with(x -> {
       x.id(id);
       x.name(name);
