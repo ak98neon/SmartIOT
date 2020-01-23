@@ -30,6 +30,11 @@ function createProduct() {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       console.log(xhr.responseText);
+      document.getElementById("error-toast").innerHTML = xhr.responseText;
+      $(document).ready(function () {
+        $('.toast').toast({ autohide: false });
+        $('.toast').toast('show');
+      });
     }
   };
 

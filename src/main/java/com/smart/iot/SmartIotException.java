@@ -8,6 +8,9 @@ public class SmartIotException extends RuntimeException {
 
   private String message;
 
+  public SmartIotException() {
+  }
+
   public SmartIotException(String message) {
     this.message = message;
   }

@@ -97,4 +97,12 @@
 .create-fridge {
   margin-top: 64px; }
 
+#error_create_product_toast {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); }
+  #error_create_product_toast .error-icon {
+    display: flex; }
+
 /*# sourceMappingURL=../../../../../target/style.css.map */

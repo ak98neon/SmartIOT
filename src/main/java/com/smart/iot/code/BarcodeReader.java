@@ -22,15 +22,19 @@ public final class BarcodeReader {
 
   public static String readBarcodeFromImage(InputStream inputStream)
       throws NotFoundException, IOException {
-    LuminanceSource source = new BufferedImageLuminanceSource(ImageIO.read(inputStream));
-    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+    try {
+      LuminanceSource source = new BufferedImageLuminanceSource(ImageIO.read(inputStream));
+      BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
-    MultiFormatReader multiFormatReader = new MultiFormatReader();
-    Map<DecodeHintType, Object> hints = new HashMap();
-    hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
-    multiFormatReader.setHints(hints);
-    Result result = multiFormatReader.decode(bitmap, hints);
+      MultiFormatReader multiFormatReader = new MultiFormatReader();
+      Map<DecodeHintType, Object> hints = new HashMap();
+      hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+      multiFormatReader.setHints(hints);
+      Result result = multiFormatReader.decode(bitmap, hints);
 
-    return result.getText();
+      return result.getText();
+    } catch (RuntimeException e) {
+      throw new BarCodeNotFoundException();
+    }
   }
 }
