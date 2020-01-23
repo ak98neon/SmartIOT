@@ -32,7 +32,7 @@
         <li class="nav-item active">
           <a class="nav-link" th:href="@{/iot}">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item dropdown">
+        <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFridges" role="button"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Fridge
@@ -42,7 +42,7 @@
             <a class="dropdown-item" th:href="@{/iot/fridges/create}">Create</a>
           </div>
         </li>
-        <li class="nav-item dropdown">
+        <lisec:authorize="isAuthenticated()" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle disabled" href="#" id="navbarDropdownProducts"
              role="button"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
