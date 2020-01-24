@@ -10,15 +10,6 @@ services:
       - "5432:5432"
     networks:
       - iot-network
-  service-iot:
-    image: arkudrya/smart-iot:latest
-    hostname: oracle-db-ils
-    ports:
-      - "8080:8080"
-    networks:
-      - iot-network
-    depends_on:
-      - postres-db
 
 networks:
   iot-network:
