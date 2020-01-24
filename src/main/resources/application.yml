@@ -2,13 +2,6 @@ server:
   port: 8080
 
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: iot
-      password: smartiot
-      username: smartiot
   datasource:
     username: postgres
     password: smartiot
