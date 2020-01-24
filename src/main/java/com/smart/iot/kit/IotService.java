@@ -18,9 +18,9 @@ public interface IotService {
 
   List<Fridge> getAllFridges();
 
-  Fridge findFridgeById(String id);
+  Fridge findFridgeById(Long id);
 
   List<ProductItem> findAllProductsByFridgeId(String fridgeId);
 
-  ProductItem deleteItemFromFridge(String name);
+  ProductItem deleteItemFromFridge(Long id);
 }

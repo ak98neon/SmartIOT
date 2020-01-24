@@ -39,7 +39,7 @@ public class FridgeController {
   }
 
   @GetMapping("/{id}")
-  public Fridge getById(@PathVariable String id) {
+  public Fridge getById(@PathVariable Long id) {
     return iotService.findFridgeById(id);
   }
 

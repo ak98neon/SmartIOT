@@ -1,30 +1,42 @@
 package com.smart.iot.kit.entity;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.function.Consumer;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Document("product")
-public class ProductItem {
+@Entity(name = "Product_Item")
+public class ProductItem extends BaseAuditEntity {
 
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private String name;
+  @Column(name = "type_product")
   private TypeProduct typeProduct;
   private Integer count;
   private String barcode;
   private Long price;
+  @Column(name = "expired_date")
   private LocalDate expiredDate;
-  @DBRef
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "fridge_id")
   private Fridge fridge;
 
-  public ProductItem(String id, String name, TypeProduct typeProduct, Integer count,
+  public ProductItem() {
+  }
+
+  private ProductItem(String name, TypeProduct typeProduct, Integer count,
       String barcode, Long price, LocalDate expiredDate, Fridge fridge) {
-    this.id = id;
     this.name = name;
     this.typeProduct = typeProduct;
     this.count = count;
@@ -32,20 +44,20 @@ public class ProductItem {
     this.price = price;
     this.expiredDate = expiredDate;
     this.fridge = fridge;
+    super.setCreatedAt(OffsetDateTime.now());
+    super.setUpdatedAt(OffsetDateTime.now());
   }
 
-  public static ProductItem ofProduct(Product product, String id) {
+  public static ProductItem ofProduct(Product product) {
     return new ProductItem(
-        id,
         product.getName(), product.getTypeProduct(), null, product.getBarcode(), product.getPrice(),
         null, null
     );
   }
 
   public static ProductItem ofProductFull(Product product, Integer count, LocalDate expiredDate,
-      Fridge fridge, String id) {
+      Fridge fridge) {
     return new ProductItem(
-        id,
         product.getName(), product.getTypeProduct(), count, product.getBarcode(),
         product.getPrice(),
         expiredDate, fridge
@@ -60,7 +72,7 @@ public class ProductItem {
     return new ProductItemBuilder();
   }
 
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
@@ -120,11 +132,6 @@ public class ProductItem {
       return this;
     }
 
-    public void id(String id) {
-      Objects.requireNonNull(id);
-      this.id = id;
-    }
-
     public void name(String name) {
       Objects.requireNonNull(name);
       this.name = name;
@@ -161,7 +168,7 @@ public class ProductItem {
 
     public ProductItem create() {
       return new ProductItem(
-          id, name, typeProduct, count, barcode, price, expiredDate, fridge
+          name, typeProduct, count, barcode, price, expiredDate, fridge
       );
     }
   }

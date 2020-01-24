@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ProductItemDto {
 
-  private String id;
+  private Long id;
   private String name;
   @JsonProperty("type_product")
   private TypeProduct typeProduct;
@@ -21,14 +21,14 @@ public class ProductItemDto {
   @JsonProperty("expired_date")
   private LocalDate expiredDate;
   @JsonProperty("fridge_id")
-  private String fridgeId;
+  private Long fridgeId;
 
   public ProductItemDto() {
   }
 
   @JsonCreator
-  public ProductItemDto(String id, String name, TypeProduct typeProduct, Integer count,
-      String barcode, Long price, LocalDate expiredDate, String fridgeId) {
+  public ProductItemDto(Long id, String name, TypeProduct typeProduct, Integer count,
+      String barcode, Long price, LocalDate expiredDate, Long fridgeId) {
     this.id = id;
     this.name = name;
     this.typeProduct = typeProduct;
@@ -55,11 +55,11 @@ public class ProductItemDto {
     return productItem.stream().map(ProductItemDto::of).collect(Collectors.toList());
   }
 
-  public String getFridgeId() {
+  public Long getFridgeId() {
     return fridgeId;
   }
 
-  public String getId() {
+  public Long getId() {
     return id;
   }
 

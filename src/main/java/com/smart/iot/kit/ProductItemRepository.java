@@ -1,8 +1,10 @@
 package com.smart.iot.kit;
 
 import com.smart.iot.kit.entity.ProductItem;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ProductItemRepository extends MongoRepository<ProductItem, String> {
+@Repository
+public interface ProductItemRepository extends JpaRepository<ProductItem, Long> {
 
 }

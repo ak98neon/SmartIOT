@@ -10,16 +10,6 @@ services:
       - "5432:5432"
     networks:
       - iot-network
-  mongo:
-    image: mongo
-    restart: always
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: smartiot
-      MONGO_INITDB_ROOT_PASSWORD: smartiot
-    networks:
-      - iot-network
   service-iot:
     image: arkudrya/smart-iot:latest
     hostname: oracle-db-ils
@@ -27,6 +17,8 @@ services:
       - "8080:8080"
     networks:
       - iot-network
+    depends_on:
+      - postres-db
 
 networks:
   iot-network:
