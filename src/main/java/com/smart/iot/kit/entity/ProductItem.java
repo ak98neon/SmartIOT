@@ -1,5 +1,6 @@
 package com.smart.iot.kit.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +31,7 @@ public class ProductItem extends BaseAuditEntity {
   private LocalDate expiredDate;
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "fridge_id")
+  @JsonIgnore
   private Fridge fridge;
 
   public ProductItem() {

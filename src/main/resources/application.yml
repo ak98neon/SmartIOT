@@ -6,6 +6,8 @@ spring:
     username: postgres
     password: smartiot
     url: jdbc:postgresql://localhost:5432/postgres
+    hikari:
+      schema: public
   servlet:
     multipart:
       max-file-size: 50MB
@@ -16,7 +18,11 @@ spring:
         jdbc:
           time_zone: UTC
         ddl-auto: validate
-
+  flyway:
+    user: postgres
+    password: smartiot
+    url: jdbc:postgresql://localhost:5432/postgres
+    schemas: public
 
 management:
   endpoints:

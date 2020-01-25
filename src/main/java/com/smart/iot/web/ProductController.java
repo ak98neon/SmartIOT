@@ -38,7 +38,7 @@ public class ProductController {
   @PostMapping("/{fridgeId}")
   public String addNewProduct(@PathVariable Long fridgeId, Model model) {
     Optional<Fridge> byId = fridgeRepository.findById(fridgeId);
-    model.addAttribute("fridgeName", byId.orElse(null).getName());
+    model.addAttribute("fridgeId", byId.orElseThrow(NullPointerException::new).getId());
     return "product/newProduct";
   }
 

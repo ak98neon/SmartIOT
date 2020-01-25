@@ -24,7 +24,7 @@ public class CreateProductRequest {
   @JsonProperty("barcode")
   private String barcodeReq;
   @JsonProperty("fridge_id")
-  private String fridgeId;
+  private Long fridgeId;
   @JsonProperty("file")
   private String file;
 
@@ -33,7 +33,7 @@ public class CreateProductRequest {
 
   @JsonCreator
   public CreateProductRequest(Integer count, String expiredDate, Long price,
-      TypeProduct typeProduct, String name, String barcodeReq, String fridgeId,
+      TypeProduct typeProduct, String name, String barcodeReq, Long fridgeId,
       String file) {
     this.count = count;
     this.expiredDate = expiredDate;
@@ -73,7 +73,7 @@ public class CreateProductRequest {
     return barcodeReq;
   }
 
-  public String getFridgeId() {
+  public Long getFridgeId() {
     return fridgeId;
   }
 }

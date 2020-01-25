@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, String>, ProductRepositoryCustom {
+public interface ProductRepository extends JpaRepository<Product, String> {
 
   @Transactional(value = TxType.REQUIRES_NEW)
   @Override
   <S extends Product> S saveAndFlush(S s);
+
+  Product findByBarcode(String barcode);
 }

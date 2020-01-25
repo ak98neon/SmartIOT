@@ -3,6 +3,7 @@ package com.smart.iot.kit;
 import static com.smart.iot.supply.SneakyTrow.sneaky;
 
 import com.google.zxing.NotFoundException;
+import com.smart.iot.SmartIotException;
 import com.smart.iot.code.BarcodeReader;
 import com.smart.iot.code.QrCodeGenerator;
 import com.smart.iot.kit.entity.Fridge;
@@ -61,18 +62,21 @@ public class DefaultIotService implements IotService {
       x.productList(Collections.emptyList());
       x.users(Collections.singletonList(byUsername));
     }).createFridge();
-    return fridgeRepository.save(fridge);
+    return fridgeRepository.saveAndFlush(fridge);
   }
 
   @Transactional
   @Override
   public Product createProductByBarcode(String name, Integer count, String expiredDate,
-      String fridgeId, byte[] imageBarcode, Long price) {
+      Long fridgeId, byte[] imageBarcode, Long price) {
     InputStream inputStream = new ByteArrayInputStream(imageBarcode);
     Product product = null;
 
     try {
-      Fridge fridge = fridgeRepository.findByName(fridgeId);
+      Optional<Fridge> fridge = fridgeRepository.findById(fridgeId);
+      if (!fridge.isPresent()) {
+        throw new SmartIotException("Fridge not present!");
+      }
 
       String barcode = BarcodeReader.readBarcodeFromImage(inputStream);
       if (barcode != null) {
@@ -80,10 +84,10 @@ public class DefaultIotService implements IotService {
         Product byBarcode = productRepository.findByBarcode(barcode);
         if (byBarcode != null) {
           ProductItem productItem = ProductItem.ofProductFull(
-              byBarcode, count, ProductItem.parseExpiredDate(expiredDate), fridge
+              byBarcode, count, ProductItem.parseExpiredDate(expiredDate), fridge.get()
           );
-          productItemRepository.save(productItem);
-          saveProductItemIntoFridge(productItem, fridge);
+          productItemRepository.saveAndFlush(productItem);
+          saveProductItemIntoFridge(productItem, fridge.get());
         } else {
           product = new ProductCreator().with(x -> {
             x.barcode(barcode);
@@ -94,12 +98,12 @@ public class DefaultIotService implements IotService {
           Product save = productRepository.saveAndFlush(product);
 
           ProductItem productItem = ProductItem.ofProductFull(
-              save, count, ProductItem.parseExpiredDate(expiredDate), fridge
+              save, count, ProductItem.parseExpiredDate(expiredDate), fridge.get()
           );
-          productItemRepository.save(productItem);
-          saveProductItemIntoFridge(productItem, fridge);
+          productItemRepository.saveAndFlush(productItem);
+          saveProductItemIntoFridge(productItem, fridge.get());
         }
-        fridgeRepository.save(fridge);
+        fridgeRepository.saveAndFlush(fridge.get());
       }
     } catch (NotFoundException | IOException e) {
       logger.info(e.getMessage());
@@ -110,8 +114,11 @@ public class DefaultIotService implements IotService {
   @Transactional
   @Override
   public Product createProductDefault(Integer count, String expiredDate, Long price,
-      TypeProduct typeProduct, String name, String barcode, String fridgeId) {
-    Fridge fridge = fridgeRepository.findByName(fridgeId);
+      TypeProduct typeProduct, String name, String barcode, Long fridgeId) {
+    Optional<Fridge> fridge = fridgeRepository.findById(fridgeId);
+    if (!fridge.isPresent()) {
+      throw new SmartIotException("Fridge not present!");
+    }
 
     Product product = new ProductCreator().with(x -> {
       x.barcode(barcode);
@@ -126,10 +133,10 @@ public class DefaultIotService implements IotService {
     Product saveAndFlush = productRepository.saveAndFlush(product);
 
     ProductItem productItem = ProductItem.ofProductFull(
-        saveAndFlush, count, ProductItem.parseExpiredDate(expiredDate), fridge
+        saveAndFlush, count, ProductItem.parseExpiredDate(expiredDate), fridge.get()
     );
-    productItemRepository.save(productItem);
-    saveProductItemIntoFridge(productItem, fridge);
+    productItemRepository.saveAndFlush(productItem);
+    saveProductItemIntoFridge(productItem, fridge.get());
     return product;
   }
 
@@ -144,7 +151,7 @@ public class DefaultIotService implements IotService {
       Optional<ProductItem> first = fridge.get().getProductList().stream()
           .filter(x -> x.getId().equals(id)).findFirst();
       fridge.get().getProductList().remove(first.get());
-      fridgeRepository.save(fridge.get());
+      fridgeRepository.saveAndFlush(fridge.get());
       return productItem.get();
     }
     return null;
@@ -152,7 +159,7 @@ public class DefaultIotService implements IotService {
 
   private void saveProductItemIntoFridge(ProductItem productItem, Fridge fridge) {
     fridge.getProductList().add(productItem);
-    fridgeRepository.save(fridge);
+    fridgeRepository.saveAndFlush(fridge);
   }
 
   @Override

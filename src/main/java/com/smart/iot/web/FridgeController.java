@@ -44,7 +44,7 @@ public class FridgeController {
   }
 
   @GetMapping
-  public String getAllFridges(Model model) {
+  public String getAllFridgesByUser(Model model) {
     model.addAttribute("fridges", iotService.getAllFridgesByUser());
     return "fridge/fridges";
   }

@@ -8,6 +8,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -17,11 +19,12 @@ import org.thymeleaf.util.StringUtils;
 public class Fridge extends BaseAuditEntity {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
   @Column(name = "qr_link")
   private byte[] qrLink;
-  @OneToMany
+  @OneToMany(mappedBy = "fridge")
   private List<ProductItem> productList;
   @ManyToMany(mappedBy = "fridges")
   private List<User> users;
