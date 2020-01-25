@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity(name = "users")
@@ -21,6 +23,9 @@ public class User extends BaseAuditEntity {
   @Column(name = "phone_number")
   private String phoneNumber;
   @ManyToMany
+  @JoinTable(name = "user_fridge",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "fridge_id")})
   private List<Fridge> fridges;
 
   public User() {

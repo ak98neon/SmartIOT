@@ -28,13 +28,13 @@ public class FridgeController {
   @PostMapping
   public String createFridge(HttpServletRequest request, Model model,
       @RequestParam(name = "fridge_name", required = false) String fridgeName) {
-    Fridge fridge = iotService.registerFridge(getBaseUrl(request), fridgeName);
+    Fridge fridge = iotService.registerFridgeByUser(getBaseUrl(request), fridgeName);
     model.addAttribute("qrCode", Base64.getEncoder().encodeToString(fridge.getQrLink()));
     return "fridge/newFridge";
   }
 
   @GetMapping("/create")
-  public String createFridgePage() {
+  public String getFridgePage() {
     return "fridge/createFridge";
   }
 
@@ -45,7 +45,7 @@ public class FridgeController {
 
   @GetMapping
   public String getAllFridges(Model model) {
-    model.addAttribute("fridges", iotService.getAllFridges());
+    model.addAttribute("fridges", iotService.getAllFridgesByUser());
     return "fridge/fridges";
   }
 }

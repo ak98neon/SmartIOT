@@ -19,6 +19,7 @@
     <java.version>1.8</java.version>
     <zxing.version>3.3.0</zxing.version>
     <jwt.version>0.10.5</jwt.version>
+    <flyway.version>5.2.3</flyway.version>
   </properties>
 
   <dependencies>
@@ -83,6 +84,11 @@
       <version>${jwt.version}</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -118,6 +124,14 @@
         <configuration>
           <inputPath>${basedir}/src/main/resources/static/scss/</inputPath>
           <outputPath>src/main/resources/static/css/</outputPath>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway.version}</version>
+        <configuration>
+          <locations>db/migration</locations>
         </configuration>
       </plugin>
     </plugins>

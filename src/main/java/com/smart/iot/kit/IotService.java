@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IotService {
 
-  Fridge registerFridge(String baseUrl, String name);
+  Fridge registerFridgeByUser(String baseUrl, String name);
 
   Product createProductByBarcode(String name, Integer count, String expiredDate,
       String fridgeId, byte[] imageBarcode, Long price);
@@ -16,11 +16,11 @@ public interface IotService {
   Product createProductDefault(Integer count, String expiredDate, Long price,
       TypeProduct typeProduct, String name, String barcode, String fridgeId);
 
-  List<Fridge> getAllFridges();
+  List<Fridge> getAllFridgesByUser();
 
   Fridge findFridgeById(Long id);
 
-  List<ProductItem> findAllProductsByFridgeId(String fridgeId);
+  List<ProductItem> findAllProductsByFridgeId(Long fridgeId);
 
   ProductItem deleteItemFromFridge(Long id);
 }

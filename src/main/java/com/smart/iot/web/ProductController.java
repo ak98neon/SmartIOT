@@ -28,7 +28,7 @@ public class ProductController {
   }
 
   @GetMapping("/{fridgeId}")
-  public String getProductsByFridgeId(@PathVariable String fridgeId, Model model) {
+  public String getProductsByFridgeId(@PathVariable Long fridgeId, Model model) {
     List<ProductItemDto> allProductsByFridgeId =
         ProductItemDto.ofList(iotService.findAllProductsByFridgeId(fridgeId));
     model.addAttribute("products", allProductsByFridgeId);
@@ -36,7 +36,7 @@ public class ProductController {
   }
 
   @PostMapping("/{fridgeId}")
-  public String addNewProduct(@PathVariable String fridgeId, Model model) {
+  public String addNewProduct(@PathVariable Long fridgeId, Model model) {
     Optional<Fridge> byId = fridgeRepository.findById(fridgeId);
     model.addAttribute("fridgeName", byId.orElse(null).getName());
     return "product/newProduct";

@@ -13,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import org.thymeleaf.util.StringUtils;
 
-@Entity(name = "fridge")
+@Entity(name = "fridges")
 public class Fridge extends BaseAuditEntity {
 
   @Id

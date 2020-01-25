@@ -11,6 +11,7 @@ import com.smart.iot.kit.entity.Product;
 import com.smart.iot.kit.entity.Product.ProductCreator;
 import com.smart.iot.kit.entity.ProductItem;
 import com.smart.iot.kit.entity.TypeProduct;
+import com.smart.iot.kit.entity.User;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 import javax.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,26 +33,33 @@ public class DefaultIotService implements IotService {
   private ProductRepository productRepository;
   private ProductItemRepository productItemRepository;
   private QrCodeGenerator qrCodeGenerator;
+  private UserRepository userRepository;
 
 
   public DefaultIotService(FridgeRepository fridgeRepository,
       ProductRepository productRepository,
-      ProductItemRepository productItemRepository, QrCodeGenerator qrCodeGenerator) {
+      ProductItemRepository productItemRepository, QrCodeGenerator qrCodeGenerator,
+      UserRepository userRepository) {
     this.fridgeRepository = fridgeRepository;
     this.productRepository = productRepository;
     this.productItemRepository = productItemRepository;
     this.qrCodeGenerator = qrCodeGenerator;
+    this.userRepository = userRepository;
   }
 
   @Transactional
   @Override
-  public Fridge registerFridge(String baseUrl, String name) {
-    String id = generateUniqueIdForFridge();
-    String link = baseUrl + "/iot/products/" + id;
+  public Fridge registerFridgeByUser(String baseUrl, String name) {
+    final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User byUsername = userRepository.findByUsername(username);
+
+    String uniqueNameForFridge = generateUniqueNameForFridge();
+    String link = baseUrl + "/iot/products/" + uniqueNameForFridge;
     Fridge fridge = new Builder().with(x -> {
       x.name(name);
       x.link(sneaky(() -> qrCodeGenerator.generateQRCodeImage(link)));
       x.productList(Collections.emptyList());
+      x.users(Collections.singletonList(byUsername));
     }).createFridge();
     return fridgeRepository.save(fridge);
   }
@@ -63,8 +72,7 @@ public class DefaultIotService implements IotService {
     Product product = null;
 
     try {
-      Optional<Fridge> byId = fridgeRepository.findByName(fridgeId);
-      Fridge fridge = byId.orElseThrow(RuntimeException::new);
+      Fridge fridge = fridgeRepository.findByName(fridgeId);
 
       String barcode = BarcodeReader.readBarcodeFromImage(inputStream);
       if (barcode != null) {
@@ -103,8 +111,7 @@ public class DefaultIotService implements IotService {
   @Override
   public Product createProductDefault(Integer count, String expiredDate, Long price,
       TypeProduct typeProduct, String name, String barcode, String fridgeId) {
-    Optional<Fridge> byId = fridgeRepository.findByName(fridgeId);
-    Fridge fridge = byId.orElseThrow(RuntimeException::new);
+    Fridge fridge = fridgeRepository.findByName(fridgeId);
 
     Product product = new ProductCreator().with(x -> {
       x.barcode(barcode);
@@ -149,8 +156,11 @@ public class DefaultIotService implements IotService {
   }
 
   @Override
-  public List<Fridge> getAllFridges() {
-    return fridgeRepository.findAll();
+  public List<Fridge> getAllFridgesByUser() {
+    final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User byUsername = userRepository.findByUsername(username);
+
+    return fridgeRepository.findAllByUsers(byUsername);
   }
 
   @Override
@@ -159,15 +169,15 @@ public class DefaultIotService implements IotService {
   }
 
   @Override
-  public List<ProductItem> findAllProductsByFridgeId(String fridgeId) {
+  public List<ProductItem> findAllProductsByFridgeId(Long fridgeId) {
     Optional<Fridge> byId = fridgeRepository.findById(fridgeId);
     return byId.isPresent() ? byId.get().getProductList() : Collections.emptyList();
   }
 
-  private String generateUniqueIdForFridge() {
+  private String generateUniqueNameForFridge() {
     String id = UUID.randomUUID().toString();
-    if (fridgeRepository.findById(id).isPresent()) {
-      return generateUniqueIdForFridge();
+    if (fridgeRepository.findByName(id) != null) {
+      return generateUniqueNameForFridge();
     }
     return id;
   }

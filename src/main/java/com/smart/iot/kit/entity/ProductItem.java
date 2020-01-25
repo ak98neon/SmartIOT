@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity(name = "Product_Item")
+@Entity(name = "product_items")
 public class ProductItem extends BaseAuditEntity {
 
   @Id

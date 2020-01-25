@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "Product")
+@Entity(name = "products")
 public class Product extends BaseAuditEntity {
 
   @Id
